@@ -94,6 +94,15 @@ ignore:
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: apollo
+theme_config:
+  gitalk:
+    on: true
+    owner: zenghuqiang
+    repo: blog
+    admin: ['zenghuqiang']
+    clientID: 2cdbd7aa1fe9fd30e3c5
+    clientSecret: 0d12d75f0e1788ffc85796b5a38bdddbbf40c77d
+
 
 
 # Deployment
