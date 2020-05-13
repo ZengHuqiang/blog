@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java多线程与并发 · 空空白的博客</title><meta name="description" content="Java多线程与并发 - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.comundefined" title="空空白的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java多线程与并发</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/Java/">#Java</a></div><div class="post-content"><h3 id="1-进程与线程的区别"><a href="#1-进程与线程的区别" class="headerlink" title="1.进程与线程的区别"></a>1.进程与线程的区别</h3><p><a href="http://39.107.124.120/2020/03/09/java后端面试-操作系统/" target="_blank" rel="noopener">进程与线程的区别</a>（<strong>需要完善</strong>）</p>
+<p>理解：</p>
+<ul>
+<li>进程与线程的由来：串行–&gt;批处理–&gt;进程–&gt;线程</li>
+<li>进程实现了程序并发的可能，线程实现程序内部并发的可能</li>
+<li>真正运行的是线程，进程只是线程的容器，将所有有关的东西放在一起，并在中间某些位置进行隔离</li>
+<li>每一个进程对应一个JVM实例，多个线程共享JVM里的堆（理解？）</li>
+</ul>
+<h3 id="2-Thread中的start和run方法的区别"><a href="#2-Thread中的start和run方法的区别" class="headerlink" title="2.Thread中的start和run方法的区别"></a>2.Thread中的start和run方法的区别</h3><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/start和run的区别.png" target="_blank" rel="noopener"><img src="http://39.107.124.120/wp-content/uploads/2020/03/start%E5%92%8Crun%E7%9A%84%E5%8C%BA%E5%88%AB-300x139.png" alt="start(http://39.107.124.120/wp-content/uploads/2020/03/start和run的区别-300x139.png)和run()的区别"></a></p>
+<ul>
+<li>调用<strong>start（）</strong>方法会<strong>创建一个新的子线程</strong>并启动</li>
+<li>调用<strong>run（）</strong>方法知识Thread中一个普通方法的调用</li>
+</ul>
+<h3 id="3-Thread和Runnable是什么关系"><a href="#3-Thread和Runnable是什么关系" class="headerlink" title="3.Thread和Runnable是什么关系"></a>3.Thread和Runnable是什么关系</h3><p>通过继承Thread类 和 实现Runnable接口 都可以实现多线程（<a href="https://www.cnblogs.com/zhaosq/p/9882102.html" target="_blank" rel="noopener">参考博客</a>）</p>
+<ul>
+<li>Thread是实现了Runnable接口的类，使得run支持多线程</li>
+<li>因类的单一继承原则，<strong>推荐多使用Runnable接口</strong>：</li>
+</ul>
+<ol>
+<li>java只能单继承，因此如果是采用继承Thread的方法，那么在以后进行代码重构的时候可能会遇到问题，因为你无法继承别的类了。</li>
+<li>如果一个类继承Thread，则不适合资源共享（<a href="https://blog.csdn.net/u010926964/article/details/74962673?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task" target="_blank" rel="noopener">参考博客</a>）</li>
+</ol>
+<h3 id="4-如何给run-方法传参"><a href="#4-如何给run-方法传参" class="headerlink" title="4.如何给run()方法传参"></a>4.如何给run()方法传参</h3><p>实现方式：</p>
+<ul>
+<li>构造函数传参</li>
+<li>成员变量传参：get/set方法</li>
+<li>回调函数传参</li>
+</ul>
+<h3 id="5-如何处理线程的返回值"><a href="#5-如何处理线程的返回值" class="headerlink" title="5.如何处理线程的返回值"></a>5.如何处理线程的返回值</h3><h4 id="5-1主线程等待法"><a href="#5-1主线程等待法" class="headerlink" title="5.1主线程等待法"></a>5.1主线程等待法</h4><p>如果不等待子线程执行完，就无法获取子线程中的数据。</p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/主线程等待法.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/53e5cd274189cc976014bad0cb176a34.png" alt="主线程等待法"></a></p>
+<p>缺点：需要自己实现等待循环的逻辑代码，如果逻辑复杂代码会十分臃肿</p>
+<h4 id="5-2使用Thread类的join（）阻塞当前线程以等待子线程处理完毕"><a href="#5-2使用Thread类的join（）阻塞当前线程以等待子线程处理完毕" class="headerlink" title="5.2使用Thread类的join（）阻塞当前线程以等待子线程处理完毕"></a>5.2使用Thread类的join（）阻塞当前线程以等待子线程处理完毕</h4><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/join方法.png" target="_blank" rel="noopener"><img src="http://39.107.124.120/wp-content/uploads/2020/03/join%E6%96%B9%E6%B3%95-300x37.png" alt="join(http://39.107.124.120/wp-content/uploads/2020/03/join方法-300x37.png)方法"></a></p>
+<ul>
+<li>优点：实现更简单，线程控制更准确</li>
+<li>缺点：不够细，类似线程中调用其他线程的逻辑关系无法实现</li>
+</ul>
+<h4 id="5-3通过Callable接口实现"><a href="#5-3通过Callable接口实现" class="headerlink" title="5.3通过Callable接口实现"></a>5.3通过Callable接口实现</h4><p>实现Callable接口：实现call（）</p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/MyCallable.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/7a0d15cf61794c899edd034c41ee2a28.png" alt="MyCallable"></a></p>
+<h5 id="5-3-1通过FutureTask-Callable-实现"><a href="#5-3-1通过FutureTask-Callable-实现" class="headerlink" title="5.3.1通过FutureTask(Callable)实现"></a>5.3.1通过FutureTask<v>(Callable)实现</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/FutureTask.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/6c4deb9a86567df9005ca9235d810e37.png" alt="FutureTask"></a></p>
+<p>FutureTask<v>中方法：</p>
+<ul>
+<li>isDone() : FutureTask中Callable的call方法是否执行完</li>
+<li>get() : 返回call（）方法执行完后的返回参数</li>
+</ul>
+<h5 id="5-3-2通过线程池来实现"><a href="#5-3-2通过线程池来实现" class="headerlink" title="5.3.2通过线程池来实现"></a>5.3.2通过线程池来实现</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/线程池实现线程处理.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/83ad2a4a43112a30cbf9366999247416.png" alt="线程池实现线程处理"></a></p>
+<ul>
+<li>创建线程池：ExecutorService newCachedThreadPool = Executors.newCachedThreadPool();</li>
+<li>定义Future对象：Future<String> future = newCachedThreadPool.submit(new MyCallable());</li>
+<li>使用isDone（future）判断call（）函数是否执行完成</li>
+<li>使用get()获取call()函数返回的参数</li>
+</ul>
+<h3 id="6-线程的状态"><a href="#6-线程的状态" class="headerlink" title="6.线程的状态"></a>6.线程的状态</h3><p><strong>六个状态：</strong></p>
+<ol>
+<li><strong>New</strong>（新建）：创建后尚未启动的线程状态</li>
+<li><strong>Runnable</strong>（运行）：包含Running(正在执行)和Ready(等待被CPU选中)</li>
+<li><strong>Waiting</strong>（无限期等待）：不会被分配CPU执行时间，需要显式的被唤醒；以下方法会进入Waiting状态</li>
+</ol>
+<ul>
+<li>没有设置Timeout参数的Object.wait()方法</li>
+<li>没有设置Timeout参数的Thread.join()方法</li>
+<li>LockSupport.park()方法</li>
+</ul>
+<p>4.<strong>Timed Waiting</strong>（期限等待）：在一定时间后由系统自动唤醒</p>
+<ul>
+<li>Thread.sleep()方法</li>
+<li>设置了Timeout参数的Object.wait（）方法</li>
+<li>设置了Timeout参数的Thread.join()方法</li>
+<li>LockSupport.parkNanos()方法</li>
+<li>LockSupport.parkUntil()方法</li>
+</ul>
+<p>5.<strong>Blocked</strong>（阻塞）：等待获取排它锁</p>
+<p>6.<strong>Terminated</strong>（结束）：已终止线程的状态，线程已经结束执行</p>
+<p><strong>线程状态之间的转换：</strong></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/线程状态的转换.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/b3879dbd292f3c39a1a1d6b6ebdb3d46.png" alt="线程状态的转换"></a></p>
+<h3 id="7-sleep和wait的区别"><a href="#7-sleep和wait的区别" class="headerlink" title="7.sleep和wait的区别"></a>7.sleep和wait的区别</h3><p><strong>基本差别：</strong></p>
+<ul>
+<li>sleep是Thread类的方法，wait是Object类中定义的方法</li>
+<li>sleep（）方法可以在任何地方使用</li>
+<li>wait（）方法只能在synchronized方法或synchronized块中使用</li>
+</ul>
+<p><strong>最主要的本质区别</strong>：</p>
+<ul>
+<li>Thread.sleep只会让出CPU，不会导致锁行为的改变</li>
+<li>Object.wait不仅让出CPU，还会<strong>释放已经占有的同步资源锁</strong></li>
+</ul>
+<h3 id="8-notify和notifyall的区别"><a href="#8-notify和notifyall的区别" class="headerlink" title="8.notify和notifyall的区别"></a>8.notify和notifyall的区别</h3><h4 id="8-1基本概念"><a href="#8-1基本概念" class="headerlink" title="8.1基本概念"></a>8.1基本概念</h4><ul>
+<li>锁池EntryList：</li>
+</ul>
+<p>假设线程A已经拥有了某个对象(不是类)的锁，而是其他线程B、C想要调用这个对象的某个synchronized方法（或者块），由于B、C线程在进入对象的synchronized方法（或块）之前必须获得该对象锁的拥有权，而恰巧该对象的锁正在被线程A锁占用，此时B、C线程就会被阻塞，<strong>进入一个地方取等待锁的释放</strong>，这个地方便是<strong>该对象的锁池</strong></p>
+<ul>
+<li>等待池WaitSet：</li>
+</ul>
+<p>假设线程A调用了某个对象的<strong>wait()方法</strong>，线程A就会释放该对象的锁，同时线程A就进入到了<strong>该对象的等待池</strong>中，<strong>进入到等待池中的线程不会竞争该对象的锁</strong>。</p>
+<h4 id="8-2区别"><a href="#8-2区别" class="headerlink" title="8.2区别"></a>8.2区别</h4><ul>
+<li>notifyAll会让所有处于该对象等待池的线程<strong>全部进入锁池</strong>去竞争获取锁的机会</li>
+<li>notify只会<strong>随机选取一个</strong>处于等待池中的线程进入锁池去竞争获取锁的机会</li>
+</ul>
+<h3 id="9-yield函数"><a href="#9-yield函数" class="headerlink" title="9.yield函数"></a>9.yield函数</h3><h4 id="9-1概念"><a href="#9-1概念" class="headerlink" title="9.1概念"></a>9.1概念</h4><p>当调用Thread.yield()函数时，会给线程调度器一个当前线程愿意让出CPU使用的<strong>暗示</strong>，但是线程调度器可能会忽略这个暗示</p>
+<h3 id="10-如何中断线程"><a href="#10-如何中断线程" class="headerlink" title="10.如何中断线程"></a>10.如何中断线程</h3><p><strong>已经被抛弃的方法：</strong></p>
+<ul>
+<li>通过调用stop（）方法停止线程（过于暴力、不安全、可能导致数据不同步的问题）</li>
+<li>通过调用suspend（）和resume（）方法</li>
+</ul>
+<p><strong>目前使用的方法：</strong></p>
+<ul>
+<li>调用interrupt（），通知线程应该中断了</li>
+</ul>
+<ol>
+<li>如果线程处于被阻塞状态，那么线程将立即退出被阻塞状态，并抛出一个InterruptException异常</li>
+<li>如果线程处于正常活动状态，那么会将线程的中断标志设置为true。被设置中断标志的线程将继续正常运行，不受影响</li>
+<li>在正常运行任务时，需要<strong>经常检查本线程的中断标志位（Thread.currentThread().isInterrupted()方法）</strong>，如果被设置了中断标志位就自行停止线程</li>
+</ol>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Java-Multithreading-02/">上一篇</a><a class="next" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/CAS-Optimistic-lock/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '2cdbd7aa1fe9fd30e3c5',     
+    clientSecret: '0d12d75f0e1788ffc85796b5a38bdddbbf40c77d',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'zenghuqiang',     
+    admin: 'zenghuqiang',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://www.kongkongbai.com">kongkongbai</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>

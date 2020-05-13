@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 排序算法整理 · 空空白的博客</title><meta name="description" content="排序算法整理 - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.comundefined" title="空空白的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">排序算法整理</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/Algorithm/">#Algorithm</a></div><div class="post-content"><p><a href="https://www.cnblogs.com/ll409546297/p/10956960.html" target="_blank" rel="noopener">参考博客</a>（非常详细）</p>
+<p><a href="https://blog.csdn.net/IBLiplus/article/details/81056945" target="_blank" rel="noopener">快速排序参考博客</a></p>
+<p><a href="https://blog.csdn.net/qq_36442947/article/details/81612870" target="_blank" rel="noopener">归并排序参考博客</a></p>
+<p><a href="https://blog.csdn.net/TangXiaoPang/article/details/87896297" target="_blank" rel="noopener">堆排序参考博客</a></p>
+<h3 id="排序算法的比较"><a href="#排序算法的比较" class="headerlink" title="排序算法的比较"></a>排序算法的比较</h3><p><a href="http://39.107.124.120/wp-content/uploads/2020/04/排序算法的比较1.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/4b7db2324210849024eb9192f4de6fa6.png" alt="排序算法的比较"></a></p>
+<ul>
+<li>冒泡排序：相邻两个数比较，将最大数移动到最后</li>
+<li>选择排序：用需要排序序列的第一个数与其他数进行比较，找到每次循环的最小数与第一个数交换</li>
+<li>插入排序：默认前面是已排序好的序列，通过比较将下一个数插入到合适位置</li>
+<li>希尔排序：原理和插入排序一致，只是每次间隔步长不一样</li>
+<li>归并排序：将序列分成两个子序列，然后子序列继续分化，直到每个子序列都为1，之后按序合并子序列</li>
+<li>快速排序：选取一个数partion（一般第一个数），定义left和right指针，通过指针移动，直至指针相遇，将数组分为大于partion的序列和小于partion的序列；再对两部分进行递归，直到排序完成。</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/Algorithm/Summary/interviewAlgorithm/">上一篇</a><a class="next" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JVM02/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '2cdbd7aa1fe9fd30e3c5',     
+    clientSecret: '0d12d75f0e1788ffc85796b5a38bdddbbf40c77d',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'zenghuqiang',     
+    admin: 'zenghuqiang',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://www.kongkongbai.com">kongkongbai</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>

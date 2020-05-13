@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java线程池 · 空空白的博客</title><meta name="description" content="Java线程池 - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.comundefined" title="空空白的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java线程池</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/Java/">#Java</a></div><div class="post-content"><h3 id="1-线程池Executors的创建"><a href="#1-线程池Executors的创建" class="headerlink" title="1.线程池Executors的创建"></a>1.线程池Executors的创建</h3><h4 id="1-1newFixedThreadPool（int-n）"><a href="#1-1newFixedThreadPool（int-n）" class="headerlink" title="1.1newFixedThreadPool（int n）"></a>1.1newFixedThreadPool（int n）</h4><p><strong>创建指定工作线程数量的线程池</strong>，如果池中线程数到达初始值n，则将任务提交给线程池，如果没有，则创建新的线程补上</p>
+<h4 id="1-2newCachedThreadPool（）"><a href="#1-2newCachedThreadPool（）" class="headerlink" title="1.2newCachedThreadPool（）"></a>1.2newCachedThreadPool（）</h4><p><strong>处理大量短时间工作任务的线程池</strong></p>
+<ul>
+<li>试图缓存线程并重用，当无缓存线程可用时，就会创建新的工作线程</li>
+<li>如果<strong>线程闲置的时间超过阀值，则会终止并移出缓存</strong></li>
+<li>系统长时间闲置时，不会消耗什么资源</li>
+</ul>
+<h4 id="1-3newSingleThreadExecutor（）"><a href="#1-3newSingleThreadExecutor（）" class="headerlink" title="1.3newSingleThreadExecutor（）"></a>1.3newSingleThreadExecutor（）</h4><p><strong>创建唯一的工作线程来执行任务</strong>，如果线程异常结束，会有另一个线程代替它（保证顺序执行任务，单线程执行）</p>
+<h4 id="1-4newSingleThreadScheduledExecutor（）与newScheduleThreadPool（int-corePoolSize）"><a href="#1-4newSingleThreadScheduledExecutor（）与newScheduleThreadPool（int-corePoolSize）" class="headerlink" title="1.4newSingleThreadScheduledExecutor（）与newScheduleThreadPool（int corePoolSize）"></a>1.4newSingleThreadScheduledExecutor（）与newScheduleThreadPool（int corePoolSize）</h4><p><strong>定时或者周期性的工作调度</strong>，两者区别在于单一工作线程还是多个线程</p>
+<h4 id="1-5newWorkStealingPool（）"><a href="#1-5newWorkStealingPool（）" class="headerlink" title="1.5newWorkStealingPool（）"></a>1.5newWorkStealingPool（）</h4><p>内部会构建ForkJoinPool，利用working-stealing算法，并行地处理任务，不保证处理顺序</p>
+<p><strong>Fork/Join框架：</strong></p>
+<ul>
+<li>把大任务分割成若干个小任务并行执行，最终汇总每个小任务结果后得到大任务结果框架</li>
+</ul>
+<h4 id="2-为什么使用线程池"><a href="#2-为什么使用线程池" class="headerlink" title="2.为什么使用线程池"></a>2.为什么使用线程池</h4><ul>
+<li>降低资源消耗</li>
+<li>提高线程的可管理性</li>
+</ul>
+<h3 id="3-Executor的框架"><a href="#3-Executor的框架" class="headerlink" title="3.Executor的框架"></a>3.Executor的框架</h3><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Executor框架.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/e4f6ac53572bc0abc394775d57e42759.png" alt="Executor框架"></a></p>
+<p><strong>三个Executor接口：</strong></p>
+<ul>
+<li><strong>Executor</strong>：运行新任务的简单接口，将任务提交和任务执行细节解耦</li>
+</ul>
+<p>Thread t = new Thread();t.start();</p>
+<p><strong>Thread t = new Thread();executor.execute(t);</strong></p>
+<ul>
+<li><strong>ExecutorService</strong>：具备管理执行器和任务生命周期的方法，提交任务机制更加完善</li>
+<li><strong>ScheduledExecutorService</strong>：支持Future和定期执行任务</li>
+</ul>
+<h3 id="4-ThreadPoolExecutor"><a href="#4-ThreadPoolExecutor" class="headerlink" title="4.ThreadPoolExecutor"></a>4.ThreadPoolExecutor</h3><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/ThreadPoolExecutor的工作流程.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/95746467515b924a73a71a9d27081db0.jpeg" alt="ThreadPoolExecutor的工作流程"></a></p>
+<p><strong>ThreadPoolExecutor的构造函数：</strong></p>
+<ul>
+<li>corePoolSize：核心线程数量</li>
+<li>maximumPoolSize：线程不够用时能够创建的最大线程数</li>
+<li>workQueue：任务等待队列</li>
+<li>keepAliveTime：线程池空闲时维护的时间（核心线程外的线程）</li>
+<li>threadFactory：创建新线程，Executors.defaultThreadFactory()</li>
+<li>handler：线程池的饱和策略（如果阻塞队列满了，且没有空闲的线程时的策略）</li>
+</ul>
+<ol>
+<li>AbortPolicy：直接抛出异常，这是<strong>默认的策略</strong></li>
+<li>CallerRunsPolicy：用调用者所在的线程来执行任务</li>
+<li>DiscardOldestPolicy：丢弃队列中靠最前的任务，并执行当前任务</li>
+<li>DiscardPolicy：直接丢弃任务</li>
+<li>实现RejectedExecutionHandler接口的自定义handler</li>
+</ol>
+<p><strong>新任务提交Executor执行后的判断：</strong></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Executor执行后的判断流程.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/436980d852a1eeb03fb94b27ee01aa98.png" alt="Executor执行后的判断流程"></a></p>
+<ul>
+<li>如果运行的线程少于corePoolSize，则创建新线程来处理任务，即使线程池中的其他线程是空闲的</li>
+<li>如果线程池中的线程数量大于等于corePoolSize且小于maximumPoolSize，则只有当workQueue满时才创建新的线程去处理任务</li>
+<li>如果设置的corePoolSize和maximumPoolSize相同，则创建的线程池的大小固定，这时如果有新任务提交，若workQueue未满则将请求放入workQueue中，等待有空闲线程去从workQueue中取任务并处理</li>
+<li>如果运行的线程数量大于等于maximumPoolSize，这时如果workQueue已经满了，则通过handler所指定的策略来处理任务</li>
+</ul>
+<h3 id="5-线程池的状态"><a href="#5-线程池的状态" class="headerlink" title="5.线程池的状态"></a>5.线程池的状态</h3><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/线程池的状态转换.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/3ca0384881de22691fd03476d8000d99.jpeg" alt="线程池的状态转换"></a></p>
+<ul>
+<li>RUNNING：能接受新提交的任务，并且也能处理阻塞队列中的任务</li>
+<li>SHUTDOWN：不再接受新提交的任务，但能处理存量的任务</li>
+<li>STOP：不再接受新提交的任务，也不处理存量任务</li>
+<li>TIDYING：所有任务都已终止，线程数为0</li>
+<li>TERMINATED：terminated（）方法执行完后进入该状态</li>
+</ul>
+<h3 id="6-线程池的大小如何选定"><a href="#6-线程池的大小如何选定" class="headerlink" title="6.线程池的大小如何选定"></a>6.线程池的大小如何选定</h3><ul>
+<li>CPU密集型：线程数 = 按照核数+1设定</li>
+<li>I/O密集型：线程数 = CPU核数*（1+平均等待时间/平均工作时间）</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JavaAnnotation/">上一篇</a><a class="next" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JavaBaseLirary/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '2cdbd7aa1fe9fd30e3c5',     
+    clientSecret: '0d12d75f0e1788ffc85796b5a38bdddbbf40c77d',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'zenghuqiang',     
+    admin: 'zenghuqiang',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://www.kongkongbai.com">kongkongbai</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>

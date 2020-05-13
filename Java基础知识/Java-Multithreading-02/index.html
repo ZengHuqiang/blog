@@ -1,0 +1,131 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java多线程与并发原理 · 空空白的博客</title><meta name="description" content="Java多线程与并发原理 - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.comundefined" title="空空白的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java多线程与并发原理</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/Java/">#Java</a></div><div class="post-content"><h2 id="1-sychronized"><a href="#1-sychronized" class="headerlink" title="1.sychronized"></a>1.sychronized</h2><h3 id="1-1线程安全问题的主要诱因"><a href="#1-1线程安全问题的主要诱因" class="headerlink" title="1.1线程安全问题的主要诱因"></a>1.1线程安全问题的主要诱因</h3><ul>
+<li>存在<strong>共享数据</strong>（临界资源）</li>
+<li>存在多条线程共同操作的这些共享数据</li>
+</ul>
+<p><strong>解决：</strong></p>
+<p>同一时刻有且只有一个线程再操作共享数据，其他线程必须等到该线程处理完数据后再对共享数据进行操作</p>
+<h3 id="1-2互斥锁的特性"><a href="#1-2互斥锁的特性" class="headerlink" title="1.2互斥锁的特性"></a>1.2互斥锁的特性</h3><ul>
+<li>互斥性：即<strong>在同一时间只允许一个线程持有某个对象锁</strong>，通过这种特性来实现多线程的协调机制，这样在同一时间只有一个线程对需要同步的代码块（复合操作）进行访问。互斥锁也称为操作的原子性</li>
+<li>可见性：必须确保在锁被释放之前，对共享变量所做的修改，对于随后获得该锁的另一个线程是可见的（即<strong>在获得锁时应获得最新共享变量的值</strong>），否则另一个线程可能是在本地缓存的某个副本上继续操作，从而引起不一致。</li>
+<li>synchronized锁的不是代码，是<strong>对象</strong></li>
+</ul>
+<h3 id="1-3根据获取的锁的分类"><a href="#1-3根据获取的锁的分类" class="headerlink" title="1.3根据获取的锁的分类"></a>1.3根据获取的锁的分类</h3><h4 id="1-3-1获取对象锁"><a href="#1-3-1获取对象锁" class="headerlink" title="1.3.1获取对象锁"></a>1.3.1获取对象锁</h4><p>获取对象锁的两种用法：</p>
+<ul>
+<li>同步代码块（synchronized（this），sychronized（类实例对象）），锁是小括号（）中的实例对象</li>
+<li>同步<strong>非静态</strong>方法（synchronized method），锁是<strong>当前对象的实例对象</strong></li>
+</ul>
+<h4 id="1-3-2获取类锁"><a href="#1-3-2获取类锁" class="headerlink" title="1.3.2获取类锁"></a>1.3.2获取类锁</h4><p>获取类锁的两种用法：</p>
+<ul>
+<li>同步代码块（synchronized（类.class）），锁是小括号（）中的<strong>类对象</strong>（Class对象）</li>
+<li>同步<strong>静态</strong>（synchronized static method），锁是<strong>当前对象的类对象</strong>（Class对象）</li>
+</ul>
+<h4 id="1-3-3总结"><a href="#1-3-3总结" class="headerlink" title="1.3.3总结"></a>1.3.3总结</h4><ol>
+<li>有线程访问对象的同步代码块时，另外的线程<strong>可以访问该对象的非同步代码块</strong></li>
+<li>若锁住的是同一个对象，一个线程在访问对象的同步代码块时，另一个访问对象的同步代码块的线程会被阻塞</li>
+<li>若锁住的是同一个对象，一个线程在访问对象的同步方法时，另一个访问对象同步方法的线程会被阻塞</li>
+<li>若锁住的是同一个对象，一个线程再访问对象的同步代码块时，另一个访问对象同步方法的线程会被阻塞，反之亦然</li>
+<li>同一个类的<strong>不同对象的对象锁互不干扰</strong></li>
+<li>类锁由于是一种<strong>特殊的对象锁</strong>，因此符合1，2，3，4的特性。而由于一个类只有一把类锁，所以<strong>同一个类不同对象使用类锁，将会是同步的</strong></li>
+<li>类锁和对象锁互不干扰</li>
+</ol>
+<h3 id="1-4sychronized底层实现"><a href="#1-4sychronized底层实现" class="headerlink" title="1.4sychronized底层实现"></a>1.4sychronized底层实现</h3><h4 id="1-4-1对象在内存中的布局"><a href="#1-4-1对象在内存中的布局" class="headerlink" title="1.4.1对象在内存中的布局"></a>1.4.1对象在内存中的布局</h4><ul>
+<li><strong>对象头</strong></li>
+<li>实例数据</li>
+<li>对齐填充</li>
+</ul>
+<h4 id="1-4-2对象头结构："><a href="#1-4-2对象头结构：" class="headerlink" title="1.4.2对象头结构："></a>1.4.2对象头结构：</h4><p>1.Mark Word：默认存储对象的hashCode，分代年龄，锁类型，锁标志位等信息</p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Java对象头MarkWord.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/d00ac2da80cab5bb2336801a8d4cb3c0.png" alt="Java对象头MarkWord"></a></p>
+<p>2.Class Metadata Address：类型指针指向对象的类元数据，JVM通过这个指针确定该对象是哪个类的数据</p>
+<h4 id="1-4-3Monitor：每个Java对象天生自带了一把看不见的锁（管程、监控器锁）"><a href="#1-4-3Monitor：每个Java对象天生自带了一把看不见的锁（管程、监控器锁）" class="headerlink" title="1.4.3Monitor：每个Java对象天生自带了一把看不见的锁（管程、监控器锁）"></a>1.4.3Monitor：每个Java对象天生自带了一把看不见的锁（管程、监控器锁）</h4><ul>
+<li>Monitor对象存在于每个java对象的对象头中，这也是sychronized可以使用对象作为锁的原因</li>
+<li>字节代码层面：对于同步代码块：<strong>monitorentry</strong>获取该对象的monitor锁，<strong>monitorexit</strong>释放该对象的monitor锁；对于同步方法：ACC_SYNCHRONIZED进行隐式的控制</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/ObjectMonitor.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/85f146bc9de476f8fc5fcee2f71579b6.jpeg" alt="ObjectMonitor"></a></p>
+<ul>
+<li>WaitSet：表示等待池中的对象集</li>
+<li>EntryList：表示锁池的对象集</li>
+<li>owner：持有该管程（对象）锁的对象</li>
+</ul>
+<h4 id="1-4-4早期Synchronized的缺点"><a href="#1-4-4早期Synchronized的缺点" class="headerlink" title="1.4.4早期Synchronized的缺点"></a>1.4.4早期Synchronized的缺点</h4><ul>
+<li>早期Sychronized锁是重量级锁，依赖于<strong>底层操作系统Mutex Lock</strong>实现</li>
+<li><strong>线程之间的切换</strong>需要从用户态切换到核心态，<strong>开销较大，效率较低</strong></li>
+</ul>
+<h4 id="1-4-5Java6之后，sychronized的性能优化"><a href="#1-4-5Java6之后，sychronized的性能优化" class="headerlink" title="1.4.5Java6之后，sychronized的性能优化"></a>1.4.5Java6之后，sychronized的性能优化</h4><ul>
+<li>Adaptive Spinning自适应自旋</li>
+<li>Lock Eliminate锁消除</li>
+<li>Lock Coarsening锁粗化</li>
+<li>Lightweight Locking轻量级锁</li>
+<li>Baised Locking</li>
+</ul>
+<h5 id="1-4-5-1自旋锁与自适应自旋锁"><a href="#1-4-5-1自旋锁与自适应自旋锁" class="headerlink" title="1.4.5.1自旋锁与自适应自旋锁"></a>1.4.5.1自旋锁与自适应自旋锁</h5><p><strong>自旋锁：</strong></p>
+<ul>
+<li>许多情况下，共享数据的锁定持续<strong>时间较短</strong>，此时<strong>切换线程不值得</strong></li>
+<li>通过让线程执行忙循环等待锁的释放，不让出CPU，<strong>等的状态就叫自旋</strong></li>
+<li><strong>缺点</strong>：若锁被其他线程长时间占用，会带来许多性能的开销</li>
+</ul>
+<p><strong>自适应自旋锁：</strong></p>
+<ul>
+<li>自旋的次数不固定</li>
+<li>由前一次在同一个锁上的自旋时间及锁的拥有者的状态来决定</li>
+</ul>
+<h5 id="1-4-5-2锁消除"><a href="#1-4-5-2锁消除" class="headerlink" title="1.4.5.2锁消除"></a>1.4.5.2锁消除</h5><ul>
+<li>在JIT编译时，对运行上下文进行扫描，去除不可能存在竞争的锁</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/锁消除.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/a627333f743f327940959ea7f6705246.png" alt="锁消除"></a></p>
+<p>由于StringBuffer是线程安全的，即sb是不可共享资源；而append方法是同步方法，JVM编译时会消除掉append的对象锁，提升效率</p>
+<h5 id="1-4-5-3锁粗化"><a href="#1-4-5-3锁粗化" class="headerlink" title="1.4.5.3锁粗化"></a>1.4.5.3锁粗化</h5><ul>
+<li>通过扩大加锁的范围，避免反复加锁和解锁</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/锁粗化.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/3852f8a38a2310ef00c55b39b9965fdb.png" alt="锁粗化"></a></p>
+<p>调用100次append的同步对象锁，为了提升效率，在加锁时JVM直接扩大为这100次循环之前</p>
+<h4 id="1-4-6sychronized的四种状态"><a href="#1-4-6sychronized的四种状态" class="headerlink" title="1.4.6sychronized的四种状态"></a>1.4.6sychronized的四种状态</h4><ul>
+<li><strong>无锁–&gt;偏向锁–&gt;轻量级锁–&gt;重量级锁</strong></li>
+</ul>
+<h5 id="1-4-6-1偏向锁：减少同一线程获得锁的代价"><a href="#1-4-6-1偏向锁：减少同一线程获得锁的代价" class="headerlink" title="1.4.6.1偏向锁：减少同一线程获得锁的代价"></a>1.4.6.1偏向锁：减少同一线程获得锁的代价</h5><ul>
+<li>大多数情况下，锁不存在多线程竞争，总是由同一线程多次获得</li>
+<li>核心思想：如果一个线程获得了锁，那么锁进入<strong>偏向模式</strong>，此时<strong>Mark Word</strong>的结构也变成<strong>偏向锁结构</strong>，当该线程再次请求锁时，无需再任何同步操作，即<strong>获得锁的过程只需要检查Mark Word的锁标记位为偏向锁以及当前线程Id等于Mark Word的ThreadID</strong>即可，这样就省去了大量有关锁申请的操作</li>
+<li>不适用于锁竞争比较激烈的多线程场合</li>
+</ul>
+<h5 id="1-4-6-2轻量级锁"><a href="#1-4-6-2轻量级锁" class="headerlink" title="1.4.6.2轻量级锁"></a>1.4.6.2轻量级锁</h5><ul>
+<li>轻量级锁是由偏向锁升级而来，偏向锁运行在一个线程进入同步块的情况中，当第二个线程加入锁争用时，偏向锁就会升级为经量级锁</li>
+<li>适用场景：线程交替执行的同步块</li>
+<li>若存在同一时间访问同一锁的情况，就会导致轻量级锁膨胀为重量级锁</li>
+</ul>
+<p><a href="https://blog.csdn.net/u013568373/article/details/94486829" target="_blank" rel="noopener">详情参考博客</a></p>
+<h5 id="1-4-6-3总结"><a href="#1-4-6-3总结" class="headerlink" title="1.4.6.3总结"></a>1.4.6.3总结</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/锁的总结.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/705beb320a092fa174e7ca3815631911.jpeg" alt="锁的总结"></a></p>
+<h2 id="2-Sychronized与Reentrantlock的区别"><a href="#2-Sychronized与Reentrantlock的区别" class="headerlink" title="2.Sychronized与Reentrantlock的区别"></a>2.Sychronized与Reentrantlock的区别</h2><h3 id="2-1ReentrantLock（再入锁）简介"><a href="#2-1ReentrantLock（再入锁）简介" class="headerlink" title="2.1ReentrantLock（再入锁）简介"></a>2.1ReentrantLock（再入锁）简介</h3><ul>
+<li>位于java.util.concurrent.locks包</li>
+<li>和CountDownLatch、FutureTask、Semaphore一样基于AQS实现</li>
+<li><strong>能够实现比sychronized更细粒度的控制，如控制fairness（sychronized是非公平锁）</strong></li>
+<li><strong>调用lock()之后，必须调用unlock()释放锁</strong></li>
+<li>性能未必比sychronized高，并且是可重入的</li>
+</ul>
+<h3 id="2-2ReentranLock公平性设置"><a href="#2-2ReentranLock公平性设置" class="headerlink" title="2.2ReentranLock公平性设置"></a>2.2ReentranLock公平性设置</h3><ul>
+<li>ReentranLock fairLock = new ReentranLock(true)：<strong>传入true参数</strong></li>
+<li><strong>公平性：倾向于将锁赋予等待时间最久的线程</strong></li>
+<li>公平锁：获取锁的顺序按先后调用lock方法的顺序（慎用）</li>
+<li>非公平锁：抢占顺序不一定，看运气</li>
+</ul>
+<h3 id="2-3ReentrantLock相比Sychronized的优势"><a href="#2-3ReentrantLock相比Sychronized的优势" class="headerlink" title="2.3ReentrantLock相比Sychronized的优势"></a>2.3ReentrantLock相比Sychronized的优势</h3><ul>
+<li><strong>等待可中断</strong>，持有锁的线程长期不释放的时候，正在等待的线程可以选择放弃等待，这相当于Synchronized来说可以避免出现死锁的情况。通过lock.lockInterruptibly()来实现这个机制。</li>
+<li><strong>公平锁</strong>，多个线程等待同一个锁时，<strong>必须按照申请锁的时间顺序获得锁</strong>，Synchronized锁非公平锁，ReentrantLock默认的构造函数是创建的非公平锁，可以通过参数true设为公平锁，但公平锁表现的性能不是很好。</li>
+<li><strong>锁绑定多个条件</strong>，一个ReentrantLock对象可以同时绑定对个对象。<strong>ReenTrantLock提供了一个Condition（条件）类</strong>，用来实现分组唤醒需要唤醒的线程们，而不是像<strong>synchronized要么随机唤醒一个线程要么唤醒全部线程</strong>。</li>
+</ul>
+<h3 id="2-4总结"><a href="#2-4总结" class="headerlink" title="2.4总结"></a>2.4总结</h3><ul>
+<li>Sychronized是关键字，ReentrantLock是类</li>
+<li>ReentrantLock可以对获取<strong>锁的等待时间</strong>进行设置，避免死锁</li>
+<li>ReentrantLock可以获取各种锁的信息</li>
+<li>ReentrantLock可以灵活地实现多路通知</li>
+<li><strong>机制：sync操作Mark Word，lock调用Unsafe类的park（）方法</strong></li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JavaReflect/">上一篇</a><a class="next" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Java-Multithreading-01/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '2cdbd7aa1fe9fd30e3c5',     
+    clientSecret: '0d12d75f0e1788ffc85796b5a38bdddbbf40c77d',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'zenghuqiang',     
+    admin: 'zenghuqiang',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://www.kongkongbai.com">kongkongbai</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>

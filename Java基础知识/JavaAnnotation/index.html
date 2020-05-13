@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java注解 · 空空白的博客</title><meta name="description" content="Java注解 - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.comundefined" title="空空白的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java注解</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/Java/">#Java</a></div><div class="post-content"><h3 id="1-基本介绍"><a href="#1-基本介绍" class="headerlink" title="1.基本介绍"></a>1.基本介绍</h3><p><strong>提供一种为程序元素设置元数据的方法</strong></p>
+<ul>
+<li>元数据是添加到程序元素如 <strong>方法、字段、类和包</strong>上额外信息</li>
+<li><strong>注解</strong>是一种<strong>分散式</strong>的元数据设置方式，<strong>XML</strong>是<strong>集中式</strong>的设置方式</li>
+<li>注解不能直接干扰程序代码的运行</li>
+</ul>
+<h3 id="2-注解的功能"><a href="#2-注解的功能" class="headerlink" title="2.注解的功能"></a>2.注解的功能</h3><ul>
+<li>作为<strong>特定的标记</strong>，用于告诉编译器一些信息</li>
+<li><strong>编译时动态处理</strong>，如动态生成代码</li>
+<li><strong>运行时动态处理</strong>，作为额外信息的载体，如获取注解信息</li>
+</ul>
+<h3 id="3-注解的分类"><a href="#3-注解的分类" class="headerlink" title="3.注解的分类"></a>3.注解的分类</h3><ul>
+<li>标准注解：@Override、@Deprecated（表示元素使用有风险）、@SuppressWarnings（表示需要忽略某些warning）</li>
+<li>元注解：@Retention、@Target、@Inherited、@Documented</li>
+<li>自定义注解</li>
+</ul>
+<h4 id="3-1元注解"><a href="#3-1元注解" class="headerlink" title="3.1元注解"></a>3.1元注解</h4><p><strong>用于修饰注解的注解，通常用在注解的定义上</strong></p>
+<ul>
+<li>@Target：注解的作用目标</li>
+<li>@Rentation：注解的生命周期</li>
+<li>@Documented：注解是否应当被包含在JavaDoc文档中</li>
+<li>@Inherited：是否允许子类继承该注解</li>
+</ul>
+<h5 id="3-1-1-Target"><a href="#3-1-1-Target" class="headerlink" title="3.1.1.@Target"></a>3.1.1.@Target</h5><p><strong>描述所修饰的注解的使用范围</strong></p>
+<p>使用：</p>
+<p><strong>ElementType</strong></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/@Target注解的作用范围.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/89af4f95075d5f8f37bab7d3502392b2.png" alt="@Target注解的作用范围"></a></p>
+<ul>
+<li>packages、types（类、接口、枚举、Annotation类型）</li>
+<li>类型成员（方法、构造函数、成员变量、枚举值）</li>
+<li>方法参数和本地变量（如循环变量、catch参数）</li>
+</ul>
+<h5 id="3-1-2-Retention"><a href="#3-1-2-Retention" class="headerlink" title="3.1.2@Retention"></a>3.1.2@Retention</h5><p><strong>标记注解被保留时间的长短（生命周期）</strong></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/@Retention的使用.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/0569c6ee974b5509b0920efae6f40178.png" alt="@Retention的使用"></a></p>
+<ul>
+<li>SOURCE：只出现在源代码中，编译后的class文件中不出现</li>
+<li>CLASS：可以出现在编译后的class文件中</li>
+<li>RUNTIME：运行时也会保留，<strong>可以在运行时通过反射从注解中获取有效信息</strong></li>
+</ul>
+<h5 id="3-1-3其他元注解"><a href="#3-1-3其他元注解" class="headerlink" title="3.1.3其他元注解"></a>3.1.3其他元注解</h5><ul>
+<li>@Documented：注解是否应当被包含在<strong>JavaDoc</strong>文档中</li>
+<li>@Inherited：是否允许子类<strong>继承</strong>该注解</li>
+</ul>
+<h4 id="3-2自定义注解"><a href="#3-2自定义注解" class="headerlink" title="3.2自定义注解"></a>3.2自定义注解</h4><ul>
+<li>自动继承java.lang.annotation.Annotation</li>
+<li>使用<strong>public</strong> <strong>@interface</strong>标识修饰</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/自定义注解的格式.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/aeb50553dd33e2211c5959e1d8269955.jpeg" alt="自定义注解的格式"></a></p>
+<h5 id="3-2-1注解属性支持的类型"><a href="#3-2-1注解属性支持的类型" class="headerlink" title="3.2.1注解属性支持的类型"></a>3.2.1注解属性支持的类型</h5><ul>
+<li>所有基本数据类型</li>
+<li>String类型</li>
+<li>Class类型</li>
+<li>Enum类型</li>
+<li>Annotation类型</li>
+<li>以上这些类型的数组</li>
+</ul>
+<h5 id="3-2-2实例"><a href="#3-2-2实例" class="headerlink" title="3.2.2实例"></a>3.2.2实例</h5><p><strong>声明：</strong></p>
+<ul>
+<li>一种类似方法的定义方式，修饰符只能为<strong>default或者public</strong></li>
+<li>如果有默认值，则<strong>使用default添加默认值</strong></li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/自定义注解的使用01.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/ca2a26282186aa21ce59a15b22732f79.png" alt="自定义注解的使用01"></a><a href="http://39.107.124.120/wp-content/uploads/2020/04/自定义注解的使用02.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/47dad0e275d116889c302e44137d65fd.png" alt="自定义注解的使用02"></a></p>
+<p><strong>使用：</strong></p>
+<ul>
+<li>根据注解的使用范围@Target可以在合适位置使用注解，<strong>默认属性名可以不赋值，其余均需赋值</strong></li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/自定义注解的使用05.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/656e68642e5268e09ddf075d5a5f81c3.png" alt="自定义注解的使用05"></a></p>
+<p><strong>获取注解：</strong></p>
+<ul>
+<li><strong>获取的注解生命周期必须为@Rentation：RUNTIME</strong></li>
+<li>获取类的注解：通过反射获取类实例–&gt;调用getAnnotations（）方法获取所有的注解实例</li>
+<li>获取成员变量/方法的注解：通过反射获取类实例–&gt;getFields获取方法实例–&gt;判断成员变量中isAnnotationParent（注解.class）是否存在该注解–&gt;调用getAnnotation（）获取注解</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/自定义注解的使用03.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/b7ad38902c67344cf825c1865e00faa6.png" alt="自定义注解的使用03"></a></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/自定义注解的使用04.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/5f8f2059ddc8d4d91199f30dc51fce44.png" alt="自定义注解的使用04"></a></p>
+<h3 id="4-注解的底层实现"><a href="#4-注解的底层实现" class="headerlink" title="4.注解的底层实现"></a>4.注解的底层实现</h3><p><strong>JVM会为注解生成代理对象</strong></p>
+<p>注解的工作原理：</p>
+<ul>
+<li>通过<strong>键值对的形式</strong>为注解属性赋值</li>
+<li>编译器检查注解的使用范围，将注解信息写入元素属性表</li>
+<li>运行时JVM将<strong>RUNTIME的所有注解属性取出最终存入map里</strong>（单个项目中生命周期为RUNTIME的注解）</li>
+<li>创建AnnotationInvocationHandler实例并传入前面的map</li>
+<li>JVM使用<strong>JDK动态代理</strong>为注解生成<strong>代理类</strong>，并初始化处理器</li>
+<li>调用invoke方法，通过传入方法名返回注解对应的属性值</li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JVM03/">上一篇</a><a class="next" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JavaThreadPool/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '2cdbd7aa1fe9fd30e3c5',     
+    clientSecret: '0d12d75f0e1788ffc85796b5a38bdddbbf40c77d',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'zenghuqiang',     
+    admin: 'zenghuqiang',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://www.kongkongbai.com">kongkongbai</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>

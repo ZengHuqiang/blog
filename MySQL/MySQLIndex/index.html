@@ -1,0 +1,124 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> MySQL索引模块 · 空空白的博客</title><meta name="description" content="MySQL索引模块 - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.comundefined" title="空空白的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">MySQL索引模块</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a></div><div class="post-content"><h3 id="0-解决的问题"><a href="#0-解决的问题" class="headerlink" title="0.解决的问题"></a>0.解决的问题</h3><ul>
+<li>为什么要使用索引–&gt;<strong>因为索引可以避免全表扫描,提升查找数据的效率,</strong></li>
+<li>什么样的信息能成为索引–&gt;<strong>主键、唯一键以及普通键等能够让数据存在区分的字段</strong></li>
+<li>索引的数据结构–&gt;<strong>主流:B+树</strong></li>
+<li>密集索引和稀疏索引的区别–&gt;看下面解答</li>
+</ul>
+<h3 id="1-索引实现数据结构之间的比较"><a href="#1-索引实现数据结构之间的比较" class="headerlink" title="1.索引实现数据结构之间的比较"></a>1.索引实现数据结构之间的比较</h3><h4 id="1-1二叉查找树"><a href="#1-1二叉查找树" class="headerlink" title="1.1二叉查找树"></a>1.1二叉查找树</h4><p>查找效率一般情况较高，如果出现线性情况，效率会很低</p>
+<h4 id="1-2B-B-树"><a href="#1-2B-B-树" class="headerlink" title="1.2B/B+树"></a>1.2B/B+树</h4><p><strong>////引用</strong></p>
+<h3 id="3-2索引的实现"><a href="#3-2索引的实现" class="headerlink" title="3.2索引的实现"></a>3.2索引的实现</h3><h3 id="3-2-0相关数据结构的区别"><a href="#3-2-0相关数据结构的区别" class="headerlink" title="3.2.0相关数据结构的区别"></a>3.2.0相关数据结构的区别</h3><ul>
+<li>二叉树与B/B+树的区别：二叉树<strong>优化比较次数</strong>，B/B+树<strong>优化磁盘读写次数</strong></li>
+<li>B树与B+树的区别：B+树的数据都存放在叶子结点中</li>
+<li>B树和二叉搜索树（如红黑树）的区别：B树的每一个结点可以存放多个数据，这样可以优化硬盘的读写速度</li>
+</ul>
+<h3 id="3-2-1-B树"><a href="#3-2-1-B树" class="headerlink" title="3.2.1 B树"></a>3.2.1 B树</h3><h4 id="定义（m阶B树）："><a href="#定义（m阶B树）：" class="headerlink" title="定义（m阶B树）："></a>定义（m阶B树）：</h4><ul>
+<li>每个非叶子节点（除根外）至多有m个子结点，至少有向上取整【m/2】个子结点</li>
+<li>根节点（如果不是叶子）至少有两个子结点</li>
+<li>所有叶子节点在同一层</li>
+<li>每个非根结点都包含k个元素（关键字），这里m/2≤k&lt;m，这里m/2向下取整。</li>
+</ul>
+<h4 id="实例：如何插入-删除一颗B树"><a href="#实例：如何插入-删除一颗B树" class="headerlink" title="实例：如何插入/删除一颗B树"></a>实例：<a href="https://www.cnblogs.com/nullzx/p/8729425.html" target="_blank" rel="noopener">如何插入/删除一颗B树</a></h4><p>插入总体思路：先将元素直接按大小插入对应结点中，如果结点中元素数量&gt;=m-1，则进行分裂（向上分裂）</p>
+<p>删除总体思路：将元素删除后，如果结点中元素数量&lt;m/2(向下取整)，则进行合并操作</p>
+<h3 id="3-2-2-B-树"><a href="#3-2-2-B-树" class="headerlink" title="3.2.2 B+树"></a>3.2.2 B+树</h3><h4 id="定义（m阶B-树，在B树上的优化）："><a href="#定义（m阶B-树，在B树上的优化）：" class="headerlink" title="定义（m阶B+树，在B树上的优化）："></a>定义（m阶B+树，在B树上的优化）：</h4><ul>
+<li>非叶子节点只做索引，不存储实际信息</li>
+<li>所有的叶子结点中包含了全部元素的实际信息</li>
+<li>所有叶子节点之间都有一个链指针</li>
+</ul>
+<h4 id="实例：如何插入-删除一颗B-树"><a href="#实例：如何插入-删除一颗B-树" class="headerlink" title="实例：如何插入/删除一颗B+树"></a>实例：<a href="https://www.cnblogs.com/nullzx/p/8729425.html" target="_blank" rel="noopener">如何插入/删除一颗B+树</a></h4><p>总体思路与B树差不多，只是在分裂结点时，只是将关键元素复制一遍后分裂</p>
+<h3 id="3-2-3为什么B-Tree更适合用来做存储索引"><a href="#3-2-3为什么B-Tree更适合用来做存储索引" class="headerlink" title="3.2.3为什么B+Tree更适合用来做存储索引"></a>3.2.3为什么B+Tree更适合用来做存储索引</h3><ul>
+<li>B+树的磁盘读写代价更低</li>
+<li>B+树的查询效率更加稳定</li>
+<li>B+树更有利于对数据库的扫描（叶子节点有链表指针链接）</li>
+</ul>
+<p><strong>////////引用</strong></p>
+<h4 id="1-3Hash索引"><a href="#1-3Hash索引" class="headerlink" title="1.3Hash索引"></a>1.3Hash索引</h4><p>优点：</p>
+<ul>
+<li><strong>查找效率高</strong></li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>仅能满足“=”，<strong>不能使用范围查询</strong></li>
+<li>无法被用来避免数据的<strong>排序操作</strong></li>
+<li>不能利用部分索引键？查询（B+树支持）</li>
+<li>不能避免表扫描？</li>
+<li>遇到大量Hash值相等的情况后性能并不一定就会比B-Tree高</li>
+</ul>
+<h4 id="1-4BitMap"><a href="#1-4BitMap" class="headerlink" title="1.4BitMap"></a>1.4BitMap</h4><h3 id="2-索引分类"><a href="#2-索引分类" class="headerlink" title="2.索引分类"></a>2.索引分类</h3><h4 id="2-1密集索引和稀疏索引的区别"><a href="#2-1密集索引和稀疏索引的区别" class="headerlink" title="2.1密集索引和稀疏索引的区别"></a>2.1密集索引和稀疏索引的区别</h4><ul>
+<li>密集索引文件中的每个搜索码都对应一个索引值(这就可以理解为<strong>叶子结点不但需要保存键值,还保存位于同一行记录的其他列信息</strong>。由于密集索引决定了表的物理排列顺序，<strong>一个表只有一个物理排列顺序</strong>，所以一个表只能创建一个密集索引)</li>
+<li>稀疏索引文件只为索引码的某些值建立索引项(这可以理解为<strong>叶子结点只保存了键位信息以及该行数据的地址</strong>，有的稀疏索引只保存了键位信息主键)</li>
+</ul>
+<h4 id="2-1MySQL中InnoDB和MyISAM索引的区别"><a href="#2-1MySQL中InnoDB和MyISAM索引的区别" class="headerlink" title="2.1MySQL中InnoDB和MyISAM索引的区别"></a>2.1MySQL中InnoDB和MyISAM索引的区别</h4><p><strong>InnoDB:聚簇表分布</strong></p>
+<ul>
+<li>只有一个<strong>主键索引为密集索引,其他都是稀疏索引</strong></li>
+</ul>
+<p>主键索引(密集索引)的选取</p>
+<ul>
+<li>若一个主键被定义,该主键为密集索引</li>
+<li>若没有主键被定义,该表的第一个唯一非空索引作为密集索引</li>
+<li>若不满足以上条件,innoDB内部会生成一个隐藏主键(密集索引)</li>
+<li>非主键索引存储 <strong>相关键位与其对应的主键值</strong>,之后查找主键索引来获取数据,<strong>包含两次查找</strong></li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/InnoDB的密集索引.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/e8c6cc75986aa242aa67426e2d7dcd1c.jpeg" alt="InnoDB的密集索引"></a></p>
+<p>非主键索引的两次查找</p>
+<ul>
+<li>在<strong>非主键稀疏索引</strong>中查找出该行数据对应的主键</li>
+<li>将该主键在<strong>主键的密集索引</strong>中查出整行的所有信息</li>
+</ul>
+<p><strong>MyISAM:非聚簇分布</strong></p>
+<ul>
+<li>无论主键还是什么都是<strong>稀疏索引</strong></li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/MyISAM稀疏索引.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/c976d0ec57537f269f37b43d62e78bca.jpeg" alt="MyISAM稀疏索引"></a></p>
+<ul>
+<li>主键索引和辅助键索引没有区别,只是存储的键值不一样</li>
+<li><strong>索引和数据分开存储</strong></li>
+<li>稀疏索引查找后会得到一个数据的存储地址,对应查询的结果</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/InnoDB和MyISAM文件存储区别.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/0944b3986fd7e6ecfe21e80d7813965c.png" alt="InnoDB和MyISAM文件存储区别"></a></p>
+<h3 id="3-如何定位并优化MySQL"><a href="#3-如何定位并优化MySQL" class="headerlink" title="3.如何定位并优化MySQL"></a>3.如何定位并优化MySQL</h3><p><strong>大致思路:</strong></p>
+<ul>
+<li>根据<strong>慢日志</strong>定位慢查询sql</li>
+<li>使用explain等工具分析sql</li>
+<li>修改sql或者尽量让sql走索引</li>
+</ul>
+<p><strong>慢日志:</strong></p>
+<ul>
+<li>默认慢日志关闭,可以通过命令(改变参数)开启慢日志,慢日志会记录所有被认为是慢查询的记录</li>
+<li>修改<strong>long_query_time</strong> : 超过这个阀值会被判定为慢查询</li>
+<li><strong>slow_queries</strong> : 本次会话中的慢查询次数</li>
+</ul>
+<p><strong>explain工具(在sql语句前加explain字段,用于分析sql语句):</strong></p>
+<ul>
+<li>type字段 : <strong>index、all</strong>表示全表查询,可能需要优化</li>
+<li>extra字段 :</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/extra字段.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/80e1fcabc5972452605b4168769a1198.jpeg" alt="extra字段"></a></p>
+<p><strong>修改优化sql:</strong></p>
+<ul>
+<li>添加索引 : <strong>alter table</strong> person_info <strong>add inedex</strong> idx_name(name)</li>
+<li>选择最优索引 : 有时候InnoDB优化器选择的索引方式不一定最优,需要根据实际情况调优</li>
+</ul>
+<h3 id="4-联合索引"><a href="#4-联合索引" class="headerlink" title="4.联合索引"></a>4.联合索引</h3><p><strong>定义:对多个字段同时建立的索引</strong></p>
+<h4 id="4-1最左匹配原则"><a href="#4-1最左匹配原则" class="headerlink" title="4.1最左匹配原则"></a>4.1最左匹配原则</h4><ul>
+<li>mysql会一直向右匹配直到<strong>遇到范围查询</strong>（&gt;、&lt;、beteewn、like）就<strong>停止匹配</strong>（比如建立索引(a,b,c,d),那么a=1 and b=2 and c&gt;5 and d=6中d就用不到索引<strong>,其中a和b的顺序是任意的</strong>）</li>
+</ul>
+<h4 id="4-2联合索引的最左匹配原则的成因"><a href="#4-2联合索引的最左匹配原则的成因" class="headerlink" title="4.2联合索引的最左匹配原则的成因"></a>4.2联合索引的最左匹配原则的成因</h4><ul>
+<li>mysql在创建联合索引时, 会先对最左边第一个字段进行排序, 在第一个字段排序的基础上再一次比较第二个字段以及后面的字段, 最后得到索引的数据</li>
+<li>因此如果不从最左边的开始匹配, 就无法得到后面排序的结果</li>
+</ul>
+<h4 id="4-3索引建立得越多越好吗"><a href="#4-3索引建立得越多越好吗" class="headerlink" title="4.3索引建立得越多越好吗?"></a>4.3索引建立得越多越好吗?</h4><ul>
+<li><strong>数据量小</strong>的表不需要建立索引，建立<strong>会增加额外的索引开销</strong></li>
+<li>数据变更需要维护索引，因此更多的索引意味着<strong>更多的维护成本</strong></li>
+<li>更多的索引意味着也需要<strong>更多的空间</strong></li>
+</ul>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/MySQL/MySQLLock/">上一篇</a><a class="next" href="/Algorithm/Offer/Offer07/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '2cdbd7aa1fe9fd30e3c5',     
+    clientSecret: '0d12d75f0e1788ffc85796b5a38bdddbbf40c77d',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'zenghuqiang',     
+    admin: 'zenghuqiang',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://www.kongkongbai.com">kongkongbai</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>

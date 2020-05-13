@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java类库基础知识 · 空空白的博客</title><meta name="description" content="Java类库基础知识 - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.comundefined" title="空空白的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java类库基础知识</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/Java/">#Java</a></div><div class="post-content"><h3 id="1-String-StringBuffer与StringBuilder的区别"><a href="#1-String-StringBuffer与StringBuilder的区别" class="headerlink" title="1.String,StringBuffer与StringBuilder的区别"></a>1.String,StringBuffer与StringBuilder的区别</h3><h4 id="1-1String类的空间浪费问题"><a href="#1-1String类的空间浪费问题" class="headerlink" title="1.1String类的空间浪费问题"></a>1.1String类的空间浪费问题</h4><ul>
+<li>String str = “hello”;</li>
+<li>str = str + “world”</li>
+</ul>
+<p>这两句代码会在堆中创建三个字符串常量对象：“hello”、“world”、“helloworld”，极大的浪费内存空间</p>
+<h4 id="1-2三者区别"><a href="#1-2三者区别" class="headerlink" title="1.2三者区别"></a>1.2三者区别</h4><ul>
+<li>String类：不可变序列对象</li>
+<li>StringBuffer：可变序列对象、效率低、但线程安全</li>
+<li>StringBuilder：可变序列对象、效率高、但线程不安全</li>
+</ul>
+<p>StringBuffer通过给实现方法加<strong>sychronized锁来实现线程安全</strong></p>
+<p><strong>使用场景：</strong></p>
+<ul>
+<li>如果要操作少量的数据用 String</li>
+<li><strong>多线程</strong>操作字符串缓冲区下操作大量数据 StringBuffer；</li>
+<li><strong>单线程</strong>操作字符串缓冲区下操作大量数据 StringBuilder。</li>
+</ul>
+<h3 id="2-Java异常体系"><a href="#2-Java异常体系" class="headerlink" title="2.Java异常体系"></a>2.Java异常体系</h3><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Java异常体系.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/821027c9550bf00548648ab1f854ec22.png" alt="Java异常体系"></a></p>
+<h4 id="2-1Error和Exception的区别"><a href="#2-1Error和Exception的区别" class="headerlink" title="2.1Error和Exception的区别"></a>2.1Error和Exception的区别</h4><ul>
+<li>Error：程序无法处理的系统错误，编译器不做检查</li>
+<li>Exception：程序可以处理的异常，捕获后可能恢复</li>
+<li>总结：Error是程序<strong>无法处理</strong>的错误，Exception是<strong>可以处理</strong>的异常</li>
+</ul>
+<p><strong>从责任的角度看：</strong></p>
+<ul>
+<li>Error属于JVM需要担负的责任</li>
+<li>RuntimeException是程序应该负担的责任</li>
+<li>Checked Exception可检查异常时Java编译器应该负担的责任（必须要追踪的异常）</li>
+</ul>
+<h4 id="2-2常见的Error以及Exception"><a href="#2-2常见的Error以及Exception" class="headerlink" title="2.2常见的Error以及Exception"></a>2.2常见的Error以及Exception</h4><p><strong>RuntimeException：</strong></p>
+<ul>
+<li>NullPointerException-空指针异常</li>
+<li>ClassCastException-类型强制转换异常</li>
+<li>IllegalArgumentException-传递非法参数异常</li>
+<li>IndexOutOfBoundsException-下标越界异常</li>
+<li>NumberFormatException-数字格式异常</li>
+</ul>
+<p>非RuntimeException：</p>
+<ul>
+<li>ClassNotFoundException-找不到指定class定义异常</li>
+<li>IOException-IO操作异常</li>
+</ul>
+<p>Error：</p>
+<ul>
+<li>NoClassDefFoundError-找不到class定义异常</li>
+<li>StackOverflowError-深递归导致栈耗尽而抛出的异常</li>
+<li>OuntOfMemoryError-内存溢出异常</li>
+</ul>
+<h4 id="2-3Java的异常处理机制"><a href="#2-3Java的异常处理机制" class="headerlink" title="2.3Java的异常处理机制"></a>2.3Java的异常处理机制</h4><ul>
+<li>抛出异常：创建异常对象，交由运行时系统处理</li>
+<li>捕获异常：寻找合适的异常处理器处理异常，否则终止运行</li>
+</ul>
+<p><strong>异常处理原则：</strong></p>
+<ul>
+<li>具体明确：抛出的异常应能通过异常类名和Message准确说明异常的类型和产生异常的原因</li>
+<li>提早抛出：应尽可能早的发现并抛出异常，便于准确定位问题</li>
+<li>延迟捕获：异常的捕获和处理应尽可能延迟，让掌握更多信息的作用域来处理异常</li>
+</ul>
+<h4 id="2-4高效主流的异常处理框架"><a href="#2-4高效主流的异常处理框架" class="headerlink" title="2.4高效主流的异常处理框架"></a>2.4高效主流的异常处理框架</h4><p>在用户看来，应用系统发生的所有异常都是应用系统内部产生的异常</p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/异常处理框架.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/d2417a9d76d6c6be651f044fc755ca11.jpeg" alt="异常处理框架"></a></p>
+<ul>
+<li>设计一个通用的继承自RuntimeException的异常来同一处理</li>
+<li>其余异常都统一转译为上述异常AppException</li>
+<li>在catch之后，抛出上述异常的子类，并提供足以定位的信息</li>
+<li>由前端接受AppException做统一处理</li>
+</ul>
+<h4 id="2-5try-catch的性能"><a href="#2-5try-catch的性能" class="headerlink" title="2.5try-catch的性能"></a>2.5try-catch的性能</h4><p>Java异常处理消耗性能的地方：</p>
+<ul>
+<li>try-catch块影响JVM的优化</li>
+<li>异常对象实例需要保护栈快照等信息，开销较大</li>
+</ul>
+<h3 id="3-Java集合框架"><a href="#3-Java集合框架" class="headerlink" title="3.Java集合框架"></a>3.Java集合框架</h3><p><a href="http://39.107.124.120/2020/03/13/java后端面试-java知识/" target="_blank" rel="noopener">结合文章参考</a></p>
+<h4 id="3-1List和Set"><a href="#3-1List和Set" class="headerlink" title="3.1List和Set"></a>3.1List和Set</h4><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/List和Set.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/4bbde0c7ecfecc721be12c7bbf4e6452.jpeg" alt="List和Set"></a></p>
+<ul>
+<li>ArrayList：线程不安全、效率高、由数组实现</li>
+<li>LinkedList：线程不安全、效率高、由链表实现</li>
+<li><strong>Vector：线程安全（by sychronized）、效率低</strong></li>
+<li>HashSet：保证元素的唯一性，由hash算法实现，hashCode()、equals()</li>
+<li>TreeSet：由二叉树实现，保证元素的排序（1.自然排序，让对象所属类去实现<strong>comparable接口</strong>，无参构造；2.比较器接口（优先）<strong>comparator</strong>，带参构造）</li>
+</ul>
+<h5 id="3-1-1-ArrayList和LinkList的区别"><a href="#3-1-1-ArrayList和LinkList的区别" class="headerlink" title="3.1.1.ArrayList和LinkList的区别"></a>3.1.1.ArrayList和LinkList的区别</h5><p><strong>数组查改方便，链表增删效率高</strong></p>
+<ul>
+<li>List操作：add（e），size（），get（i），remove（i），itr.remove()…</li>
+<li>ArrayList操作复杂度：add -O(N) , <strong>size -O(1) , get -O(1)</strong>, remove-O(N), itr.remove -O(N)</li>
+<li>LinkedList操作复杂度：<strong>add -O(1) , size -O(1）</strong>[可以依靠外部的辅助字段]，get -O(N) , remove – O(N), <strong>itr.remove -O(1)</strong></li>
+</ul>
+<p><strong>回答：List是一个接口，ArrayList和LinkedList是它的实现，ArrayList是由数组来实现，LinkedList是由链表来实现。</strong></p>
+<h4 id="3-2-Map"><a href="#3-2-Map" class="headerlink" title="3.2 Map"></a>3.2 Map</h4><h4 id="3-2-1HashMap、HashTable、ConccurentHashMap区别"><a href="#3-2-1HashMap、HashTable、ConccurentHashMap区别" class="headerlink" title="3.2.1HashMap、HashTable、ConccurentHashMap区别"></a>3.2.1HashMap、HashTable、ConccurentHashMap区别</h4><p><strong>1.HashMap（<a href="https://www.cnblogs.com/yuanfy008/p/11073246.html" target="_blank" rel="noopener">参考博客</a>）</strong></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/HashMap原理01.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/21e47175a597e8eb795ede00f0ad6a04.jpeg" alt="HashMap原理01"></a></p>
+<ul>
+<li>实现：数组+链表（+<strong>红黑树Java8及以后</strong>）</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/HashMap原理02.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/bf2b4c189991e0fa6b0c479f7de942b8.jpeg" alt="HashMap原理02"></a></p>
+<ul>
+<li>分析：如果一个桶中的链表存储了过多元素，会导致HashMap性能降低，<strong>Java8以后定义了一个TREEIFY_THRESHOLD（默认为8，超过8会被改造，如果又低于6则会转回链表）常量来判断是否将链表转换为红黑树结构</strong></li>
+</ul>
+<p><strong>HashMap的延迟创建：</strong></p>
+<ul>
+<li>第一次进行put方法时，HashMap会判断table（桶）是否为空，<strong>如果为空则调用resize()进行初始化</strong></li>
+</ul>
+<p><strong>HashMap：put方法的逻辑</strong></p>
+<ol>
+<li>若HashMap未被初始化，则进行初始化操作（延迟创建）</li>
+<li>对Key求Hash值，依据Hash值计算下标</li>
+<li>若未发生碰撞，则直接放入桶中</li>
+<li>若发生碰撞，则以链表的方式链接到后面</li>
+<li><strong>若链表长度超过阀值，且HashMap桶数超过最低树化容量（默认64），则转化成红黑树；否则直接扩容</strong></li>
+<li>若<strong>元素个数超过阀值</strong>（<strong>默认16*扩容因子0.75</strong>），<strong>如果超过则使用resize()扩容桶数两倍</strong></li>
+<li>若节点已经存在，则用新值替换旧值</li>
+</ol>
+<p><strong>HashMap：从获取hash到散列的过程：</strong></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/HashMap原理03.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/8fd715e49e4e8e90f4bf92836fda1397.jpeg" alt="HashMap原理03"></a></p>
+<ul>
+<li>n-1作为最后的获取桶值的参数，<strong>设置table容量时都是2的倍数</strong></li>
+</ul>
+<p><strong>HashMap：如何有效减少碰撞？</strong></p>
+<ul>
+<li><strong>扰动函数：</strong>促使元素位置分布均匀，减少碰撞几率</li>
+<li>使用final对象（不可变性），并采用合适的equals()和hashCode()方法</li>
+</ul>
+<p><strong>HashMap：扩容的问题</strong></p>
+<ul>
+<li><strong>什么时候进行扩容？当hashmap中的元素个数超过数组大小*loadFactor扩容因子时</strong></li>
+<li>多线程环境下，调整大小会存在条件竞争，<strong>容易造成死锁</strong></li>
+<li>rehashing重新定位是一个比较<strong>耗时</strong>的过程</li>
+</ul>
+<p><strong>HashMap的线程安全问题解决</strong></p>
+<ul>
+<li>Map safeHashMap = <strong>Collections.sychronizedMap（hashMap）</strong>对hashMap进行安全改造</li>
+<li>原理：在原来HashMap的基础上加上<strong>mutex对象</strong>，对此对象进行<strong>sychronized同步加锁</strong>来对其他方法进行控制</li>
+</ul>
+<p><strong>为什么HashMap允许null键，而HashTable、ConcurrentHashMap不允许</strong></p>
+<ul>
+<li><strong>Hashtable存入的value为null时，抛出NullPointerException异常。如果value不为null，而key为空，在执行到int hash = key.hashCode()时同样会抛出NullPointerException异常</strong></li>
+<li>HashMap在put的时候会调用hash()方法来<strong>计算key的hashcode值</strong>，可以从hash算法中看出<strong>当key==null时返回的值为0</strong>。因此key为null时，hash算法返回值为0，不会调用key的hashcode方法</li>
+<li>因为hashtable,concurrenthashmap它们是用于多线程的，并发的 ，如果map.get(key)得到了null，不能判断到底是映射的value是null,还是因为没有找到对应的key而为空，而用于单线程状态的hashmap却可以用containKey（key） 去判断到底是否包含了这个null</li>
+</ul>
+<p><strong>2.Hashtable和ConcurrentHashMap</strong></p>
+<ul>
+<li>Hashtable是<strong>遗留产物</strong>（从Java1），如今基本不使用</li>
+<li>Hashtable<strong>不允许null</strong>，HashMap可以放null</li>
+<li>Hashtable是<strong>线程安全</strong>，因为所有危险函数都加了synchronized</li>
+</ul>
+<p><strong>如何对Hashtable优化？ –&gt;ConccurentHashMap（不允许插入null键）</strong></p>
+<ul>
+<li>早期：通过锁细粒度化，<strong>将整锁拆解成多个锁进行优化</strong></li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/ConcurrentHashMap早期原理.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/0c1ee941c8898c4b7ce512bdde87d9b2.jpeg" alt="ConcurrentHashMap早期原理"></a></p>
+<p>理解：将桶数组分为多个段，每个段使用一个锁（<strong>segment分段锁</strong>），在并发处理不同段的数据时，线程之间互不影响</p>
+<ul>
+<li>Java8及之后：<strong>CAS+sychronized</strong>使锁更细化</li>
+</ul>
+<p>**ConcurrentHashMap的put方法逻辑：</p>
+<p>**</p>
+<ol>
+<li>判断Node[ ] 数组是否初始化，没有则进行初始化</li>
+<li>通过hash定位数组的索引坐标，是否有Node节点，如果没有则使用<strong>CAS进行添加</strong>（链表的头节点），添加失败则进行下一次循环</li>
+<li>检查到内部正在扩容，则调用helptransfer（）帮助它一起扩容</li>
+<li>如果头节点f!=null，则<strong>使用sychronized锁住f元素</strong>，然后进行添加操作</li>
+<li>判断链表长度已经达到临界值（默认为8），则将链表转换为红黑树结构</li>
+</ol>
+<p><strong>ConcurrentHashMap总结：</strong></p>
+<ul>
+<li>首先<strong>使用无锁操作CAS插入头节点</strong>，失败则循环重试</li>
+<li>若头节点存在，尝试<strong>获取头节点的同步锁</strong>，在进行操作</li>
+</ul>
+<h4 id="三者区别总结："><a href="#三者区别总结：" class="headerlink" title="三者区别总结："></a>三者区别总结：</h4><ol>
+<li><strong>HashMap线程不安全，数组+链表+红黑树</strong></li>
+<li><strong>Hashtable线程安全，锁住整个对象，数组+链表</strong></li>
+<li><strong>ConcurrentHashMap线程安全，CAS+同步锁，数组+链表+红黑树</strong></li>
+<li><strong>HashMap的key、value均可为null，而其他的两个类都不支持</strong></li>
+</ol>
+<h3 id="4-J-U-C知识点梳理"><a href="#4-J-U-C知识点梳理" class="headerlink" title="4.J.U.C知识点梳理"></a>4.J.U.C知识点梳理</h3><p><strong>java.util.current：提供并发编程的解决方案</strong></p>
+<ul>
+<li>CAS是java.util.concurrent.atomic包的基础</li>
+<li>AQS是java.util.concurrent.locks包以及一些常用类比如Semophore，Reentrantlock等类的基础</li>
+</ul>
+<p><strong>J.U.C包的分类</strong></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/JUC包的分类.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/048eee00c41d3591d0627d36ee4964ca.jpeg" alt="JUC包的分类"></a></p>
+<ul>
+<li>线程执行器executor</li>
+<li>锁locks</li>
+<li>原子变量类atomic</li>
+<li>并发工具类tools</li>
+<li>并发集合collections</li>
+</ul>
+<h4 id="4-1并发工具类"><a href="#4-1并发工具类" class="headerlink" title="4.1并发工具类"></a>4.1并发工具类</h4><h5 id="4-1-1闭锁CountDownLatch：让主线程等待一组事件发生后继续执行"><a href="#4-1-1闭锁CountDownLatch：让主线程等待一组事件发生后继续执行" class="headerlink" title="4.1.1闭锁CountDownLatch：让主线程等待一组事件发生后继续执行"></a>4.1.1闭锁CountDownLatch：让主线程等待一组事件发生后继续执行</h5><ul>
+<li>事件指的的是CountDownLatch里的countDown()方法；每次countDonw()方法会使cnt参数减1</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/CountDownLatch01.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/313ad5604b8716d8618aa9272bdbd20a.jpeg" alt="CountDownLatch01"></a></p>
+<p>使用：</p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/CountDownLatch02.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/e23025026885387e6911bd6ebab10eea.jpeg" alt="CountDownLatch02"></a></p>
+<h5 id="4-1-2栅栏CyclicBarrier：阻塞当前线程等待其他线程"><a href="#4-1-2栅栏CyclicBarrier：阻塞当前线程等待其他线程" class="headerlink" title="4.1.2栅栏CyclicBarrier：阻塞当前线程等待其他线程"></a>4.1.2栅栏CyclicBarrier：阻塞当前线程等待其他线程</h5><ul>
+<li>等待其他线程，且会阻塞当前线程，所有线程必须同时到达栅栏位置后，才能继续执行</li>
+<li>所有线程到达栅栏处，可以触发执行另外一个预先设定的线程</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/CyclicBarrier01.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/800fefdfa3fa60f5355fe3691775743f.jpeg" alt="CyclicBarrier01"></a></p>
+<p><strong>与CountDownLatch的区别：一个阻塞当前线程，一个阻塞主线程</strong></p>
+<p>使用：</p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/CyclicBarrier02.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/564288a05dd3598f8e02598f7addc7d7.png" alt="CyclicBarrier02"></a></p>
+<h5 id="4-1-3信号量Semaphore：控制某个资源可被同时访问的线程个数"><a href="#4-1-3信号量Semaphore：控制某个资源可被同时访问的线程个数" class="headerlink" title="4.1.3信号量Semaphore：控制某个资源可被同时访问的线程个数"></a>4.1.3信号量Semaphore：控制某个资源可被同时访问的线程个数</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Semaphore的使用.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/94fcc61ce85784cf0fb532dac8d38c46.png" alt="Semaphore的使用"></a></p>
+<h5 id="4-1-4交换器Exchanger：两个线程到达同步点后，相互交换数据"><a href="#4-1-4交换器Exchanger：两个线程到达同步点后，相互交换数据" class="headerlink" title="4.1.4交换器Exchanger：两个线程到达同步点后，相互交换数据"></a>4.1.4交换器Exchanger：两个线程到达同步点后，相互交换数据</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Exchanger.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/2f1b0979bde776130649cf459128ef32.jpeg" alt="Exchanger"></a></p>
+<p>使用：</p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Exchanger的使用.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/09c54c8fb9c8c00ddfbd157410337dd6.jpeg" alt="Exchanger的使用"></a></p>
+<ul>
+<li>当两个线程都到达同步点，即<strong>同时运行到exchange()方法</strong>时，两个线程交换数据然后继续运行</li>
+</ul>
+<h5 id="4-1-5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作"><a href="#4-1-5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作" class="headerlink" title="4.1.5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作"></a>4.1.5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/BlockingQueue01.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/85f6536bafc605aeffc27451355a8b5b.jpeg" alt="BlockingQueue01"></a></p>
+<ul>
+<li>主要用于<strong>生产者-消费者模式</strong>，在多线程场景时生产者线程在队列尾部添加元素，而消费者线程则在队列头部消费元素，通过这种方式能够达到将任务的生成和消费进行隔离的目的</li>
+</ul>
+<p>实现方式：</p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/BlockingQueue02.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/68bb1c83cd8a1094606e477b162e9e5d.jpeg" alt="BlockingQueue02"></a></p>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JavaThreadPool/">上一篇</a><a class="next" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JavaGeneric/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '2cdbd7aa1fe9fd30e3c5',     
+    clientSecret: '0d12d75f0e1788ffc85796b5a38bdddbbf40c77d',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'zenghuqiang',     
+    admin: 'zenghuqiang',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://www.kongkongbai.com">kongkongbai</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>
