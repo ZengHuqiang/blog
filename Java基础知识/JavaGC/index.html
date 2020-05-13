@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Java GC · 空空白的博客</title><meta name="description" content="Java GC - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.com/atom.xml" title="空空白的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/atom.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Java GC</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/Java/">#Java</a></div><div class="post-content"><h3 id="1判定对象为垃圾的算法"><a href="#1判定对象为垃圾的算法" class="headerlink" title="1判定对象为垃圾的算法"></a>1判定对象为垃圾的算法</h3><h4 id="1-1引用计数算法"><a href="#1-1引用计数算法" class="headerlink" title="1.1引用计数算法"></a>1.1引用计数算法</h4><ul>
+<li>通过判断对象的引用数量来决定对象是否被回收</li>
+<li>每个对象实例都有一个引用计数器，被引用则+1，完成引用则-1</li>
+<li>任何引用计数为0的对象实例可以被当作垃圾回收</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>执行效率，程序受影响较小</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/循环引用.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/3eee5d59f1895edce031872447f929ca.jpeg" alt="循环引用"></a></p>
+<ul>
+<li>无法检测处循环引用的情况，导致内存泄漏</li>
+</ul>
+<h5 id="1-2可达性分析算法"><a href="#1-2可达性分析算法" class="headerlink" title="1.2可达性分析算法"></a>1.2可达性分析算法</h5><ul>
+<li>通过判断对象的引用链是否可达来决定对象是否可以被回收</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/可达性分析算法.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/c4d0e77240a4bcd87da19fac8e3a6bd3.jpeg" alt="可达性分析算法"></a></p>
+<p><strong>可以作为GC Root的对象：</strong></p>
+<ul>
+<li>虚拟机栈中引用的对象（栈帧中的本地变量表）</li>
+<li>方法区中的常量引用对象</li>
+<li>方法区中的类静态属性引用的变量</li>
+<li>本地方法栈中JNI（Native方法）的引用对象</li>
+<li>活跃线程的引用对象</li>
+</ul>
+<h3 id="2-垃圾回收算法"><a href="#2-垃圾回收算法" class="headerlink" title="2.垃圾回收算法"></a>2.垃圾回收算法</h3><h4 id="2-1标记-清除算法（Mark-and-Sweep）"><a href="#2-1标记-清除算法（Mark-and-Sweep）" class="headerlink" title="2.1标记-清除算法（Mark and Sweep）"></a>2.1标记-清除算法（Mark and Sweep）</h4><ul>
+<li>标记：从根集合进行扫描，对存活的对象进行标记</li>
+<li>清除：对对内存从头到尾进行 线性遍历，回收不可达对象内存</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/标记-清除算法.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/46cb76f86a90dba0f60783a8bc5bfcea.jpeg" alt="标记-清除算法"></a></p>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>垃圾回收完后，内存<strong>碎片化</strong>（<strong>产生大量不连续的对象</strong>）</li>
+</ul>
+<h4 id="2-2复制算法"><a href="#2-2复制算法" class="headerlink" title="2.2复制算法"></a>2.2复制算法</h4><ul>
+<li>分为<strong>对象面</strong>和<strong>空闲面</strong></li>
+<li>对象在对象面上创建</li>
+<li>存活的对象被从对象面复制到空闲面</li>
+<li>将对象面所有对象内存清楚</li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>解决碎片化问题</li>
+<li>顺序分配内存，简单高效</li>
+<li>适用于<strong>对象存活率低</strong>的场景（一般运用于<strong>新生代</strong>）</li>
+</ul>
+<h4 id="2-3标记-整理算法"><a href="#2-3标记-整理算法" class="headerlink" title="2.3标记-整理算法"></a>2.3标记-整理算法</h4><ul>
+<li>标记：从根集合进行扫描，对存活的对象进行标记</li>
+<li>整理：移动存活的对象，且<strong>按照内存地址次序依次排列</strong>，然后将<strong>末端内存地址以后的内存全部回收</strong></li>
+</ul>
+<p><strong>优点：</strong></p>
+<ul>
+<li>解决碎片化问题</li>
+<li>不用设置两块内存互换</li>
+<li>使用于<strong>存活率高</strong>的场景（<strong>老年代的回收</strong>）</li>
+</ul>
+<h4 id="2-4分代收集算法"><a href="#2-4分代收集算法" class="headerlink" title="2.4分代收集算法"></a>2.4分代收集算法</h4><ul>
+<li>垃圾回收算法的组合</li>
+<li><strong>按照对象生命周期的不同划分区域以采用不同的垃圾算法</strong></li>
+</ul>
+<h5 id="2-4-1不同时期的分代算法"><a href="#2-4-1不同时期的分代算法" class="headerlink" title="2.4.1不同时期的分代算法"></a>2.4.1不同时期的分代算法</h5><p>Jdk6、Jdk7：分为<strong>年轻代、老年代、永久代</strong></p>
+<p>Jdk8及以后：分为<strong>年轻代、老年代</strong></p>
+<h3 id="3-Java内存GC"><a href="#3-Java内存GC" class="headerlink" title="3.Java内存GC"></a>3.Java内存GC</h3><h4 id="3-1GC的分类"><a href="#3-1GC的分类" class="headerlink" title="3.1GC的分类"></a>3.1GC的分类</h4><ul>
+<li>Minor GC（用于<strong>年轻代的复制算法</strong>）</li>
+<li>Full GC</li>
+</ul>
+<h4 id="3-2年轻代：尽可能的快速收集掉哪些生命周期短的对象"><a href="#3-2年轻代：尽可能的快速收集掉哪些生命周期短的对象" class="headerlink" title="3.2年轻代：尽可能的快速收集掉哪些生命周期短的对象"></a>3.2年轻代：尽可能的快速收集掉哪些生命周期短的对象</h4><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Java堆内存.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/747ed25a31ad9bda64bac8e4821dc569.jpeg" alt="Java堆内存"></a></p>
+<ul>
+<li>Eden区</li>
+<li>两个Survivor区（from区，to区）</li>
+</ul>
+<p><strong>复制算法描述：</strong></p>
+<ul>
+<li>新生代对象创建后放在Eden区</li>
+<li><strong>当Eden区的对象存满时，触发一次Minor GC</strong>，将Eden区和一个Survivor区(from区)的存活对象复制放到另一个Survivor区(to区)并清除Eden和from区的所有对象</li>
+<li><strong>每进行一次Minor GC，该对象的年龄会加1，当年龄达到一定数（默认15）时，会转换到老年代</strong></li>
+<li>当再次触发Minor GC时，之前的to区转换为from区，与Eden区一起将存活对象复制给另一个Survivor区</li>
+</ul>
+<p><strong>对象如何晋升到老年代：</strong></p>
+<ul>
+<li>经历一定次数的Minor后年龄达到一定数（默认15）</li>
+<li><strong>Survivor区（to区）中存放不下的对象</strong></li>
+<li>新生产的<strong>大对象(-XX:+PretenuerSizeThreshold)</strong></li>
+</ul>
+<p><strong>常用的调优参数：</strong></p>
+<ul>
+<li>-XX:  <strong>SurvivorRatio</strong>：Eden和Survivor区的比值，默认8：1</li>
+<li>-XX：<strong>NewRatio</strong>：老年代和年轻代内存大小比例，默认2：1</li>
+<li>-XX：<strong>MaxTenuringThreshold</strong>：对象从年轻代晋升到老年代经过GC次数的最大阀值</li>
+</ul>
+<h4 id="3-3老年代：存放生命周期较长的对象"><a href="#3-3老年代：存放生命周期较长的对象" class="headerlink" title="3.3老年代：存放生命周期较长的对象"></a>3.3老年代：存放生命周期较长的对象</h4><ul>
+<li><strong>标记-清理算法</strong></li>
+<li><strong>标记-整理算法</strong></li>
+</ul>
+<p><strong>Full GC（所有的GC）和Major GC（一般指对老年的GC）</strong></p>
+<ul>
+<li>Full GC比Minor GC慢，但执行频率低</li>
+</ul>
+<p><strong>触发Full GC的条件：</strong></p>
+<ul>
+<li>老年代空间不足</li>
+<li>永久代空间不足（Jdk8后元空间代替了永久代，条件不成立了）</li>
+<li>CMS GC时出现promotion failed(触发MinorGC时，新生代和永久代空间都不足)，concurrent mode failure(执行CMS GC时同时有对象要放入老年代中，此时老年代空间不足时)</li>
+<li>Minor GC晋升到老年代的平均大小大于老年代的剩余空间</li>
+<li>调用System.gc()</li>
+<li>使用RMI来进行RPC或管理的JDK应用，每小时执行依次Full GC</li>
+</ul>
+<h3 id="4-Java垃圾收集器"><a href="#4-Java垃圾收集器" class="headerlink" title="4.Java垃圾收集器"></a>4.Java垃圾收集器</h3><p><strong>Stop-the-World：</strong></p>
+<ul>
+<li>JVM由于要执行GC而停止了应用程序的执行</li>
+<li>任何一种GC算法中都会发生</li>
+<li>多数<strong>GC优化</strong>通过减少Stop-the-world发生的时间来提高程序性能</li>
+</ul>
+<p><strong>Safepoint安全点：</strong></p>
+<ul>
+<li>分析过程中对象引用关系不会发生变化的点</li>
+<li>产生Safepoint的地方：方法调用、循环跳转、异常跳转等</li>
+<li>安全点数量得适中</li>
+</ul>
+<p><strong>JVM的运行模式</strong></p>
+<ul>
+<li>Server：启动速度慢，但一旦启动稳定后，运行速度比Client快，采用重量级虚拟机</li>
+<li>Client：启动速度快，采用轻量级虚拟机</li>
+</ul>
+<h4 id="4-1新生代常见的垃圾收集器"><a href="#4-1新生代常见的垃圾收集器" class="headerlink" title="4.1新生代常见的垃圾收集器"></a>4.1新生代常见的垃圾收集器</h4><p><strong>Serial收集器</strong>（-XX:+UseSerialGC，<strong>复制算法</strong>）：</p>
+<ul>
+<li><strong>单线程收集</strong>，进行垃圾收集时，必须暂停所有的工作线程</li>
+<li>简单高效，Client模式下默认的年轻代收集器</li>
+</ul>
+<p><strong>ParNew收集器</strong>（-XX：+UseParNewGC，<strong>复制算法</strong>）：</p>
+<ul>
+<li><strong>多线程收集</strong>，其余的行为、特点和Serial收集器一样</li>
+<li>单核执行效率不如Serial，<strong>再多核下执行才有优势</strong></li>
+</ul>
+<p><strong>Parallel Scavenge收集器</strong>（-XX：+UseParallelGC，<strong>复制算法</strong>）：</p>
+<ul>
+<li>吞吐量=运行用户代码时间/（运行用户代码时间+垃圾收集时间）</li>
+<li>比起关注用户线程停顿时间，更关注系统的吞吐量</li>
+<li>也是多线程收集，在多核下才有优势，Server模式下默认的年轻代收集器</li>
+</ul>
+<h4 id="4-2老年代常见的垃圾收集器"><a href="#4-2老年代常见的垃圾收集器" class="headerlink" title="4.2老年代常见的垃圾收集器"></a>4.2老年代常见的垃圾收集器</h4><p><strong>Serial Old收集器</strong>（-XX：+UseSerialOldGC，<strong>标记整理算法</strong>）</p>
+<ul>
+<li>单线程收集，进行垃圾收集时，必须暂停所有的工作线程</li>
+<li>简单高效，Client模式下默认的老年代收集器</li>
+</ul>
+<p><strong>Parallel Old收集器</strong>（-XX：+UseParallelOldGC，<strong>标记整理算法</strong>）</p>
+<ul>
+<li>多线程，吞吐量优先</li>
+</ul>
+<p><strong>CMS收集器</strong>（-XX：+UseConcMarkSweepGC，<strong>标记清除算法</strong>）</p>
+<p>运行过程：</p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/CMS收集器的工作过程.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/0ec8990af36c57a1b5f581a9e45e6d94.jpeg" alt="CMS收集器的工作过程"></a></p>
+<ul>
+<li>初始化标记：stop-the-world，暂停工作线程，扫描到能与根对象直接关联的对象</li>
+<li>并发标记：并发追踪标记，程序不会停顿</li>
+<li>并发预清理：查找执行并发标记阶段从年轻代晋升为老年代的对象</li>
+<li>重新标记：暂停虚拟机，扫描CMS堆中的剩余对象</li>
+<li>并发清理：清理垃圾对象，程序不会停顿</li>
+<li>并发重置：重置CMS收集的数据结构</li>
+</ul>
+<p><strong>G1收集器</strong>（-XX：+UseG1GC，<strong>复制+标记-整理算法</strong>）：运用于新生代和老年代</p>
+<p><strong>特点：</strong></p>
+<ul>
+<li>并发和并行</li>
+<li>分代收集</li>
+<li>空间整合</li>
+<li>可预测的停顿</li>
+</ul>
+<p><strong>Garbage First收集器工作机制：</strong></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/G.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/0cea4c3a1951a6c71cc84e7cb552ac1e.jpeg" alt="G"></a></p>
+<ul>
+<li>将整个Java堆内存划分为多个<strong>大小相等的\</strong>Regi*<em>on*</em></li>
+<li>年轻代和老年代不再物理隔离（不需要连续的内存空间）</li>
+</ul>
+<h3 id="5-GC相关的面试题"><a href="#5-GC相关的面试题" class="headerlink" title="5.GC相关的面试题"></a>5.GC相关的面试题</h3><h5 id="5-1Object的finalize-方法的作用是否与C-的析构函数作用相同"><a href="#5-1Object的finalize-方法的作用是否与C-的析构函数作用相同" class="headerlink" title="5.1Object的finalize()方法的作用是否与C++的析构函数作用相同"></a>5.1Object的finalize()方法的作用是否与C++的析构函数作用相同</h5><ul>
+<li>与C++的析构函数不同，析构函数调用确定，而<strong>finalize()是不确定的</strong></li>
+<li>方法执行随时可能会被终止（低优先级）</li>
+<li><strong>给予对象最后一次重生的机会</strong></li>
+<li>原理：java的垃圾回收器要宣告一个对象死亡需要经过<strong>两次标记</strong>过程，经过可达性分析后，如果<strong>对象未被引用且重构了finalize()方法</strong>，则会被放置于F-Queue队列中，并在稍后由JVM以<strong>低优先级</strong>来处理这个队列</li>
+</ul>
+<h5 id="5-2Java中强引用、软引用、弱引用、虚引用有什么用"><a href="#5-2Java中强引用、软引用、弱引用、虚引用有什么用" class="headerlink" title="5.2Java中强引用、软引用、弱引用、虚引用有什么用"></a>5.2Java中强引用、软引用、弱引用、虚引用有什么用</h5><p><strong>强引用（Strong Reference）</strong>：</p>
+<ul>
+<li>最普遍的引用：Object obj = new Object()</li>
+<li>宁可抛出OutOfMemoryError终止程序也不会回收具有强引用的对象</li>
+<li>通过将<strong>对象设置为null来弱化引用</strong>，使其被回收</li>
+</ul>
+<p><strong>软引用（Soft Reference）：</strong></p>
+<p>String str = new String（”abc“）//强引用<br>SoftReference<String> softstr = new SoftReference<String>(str)//强引用转换为软引用</p>
+<ul>
+<li>对象处在<strong>有用但非必须</strong>的状态</li>
+<li>只有当<strong>内存空间不足</strong>时，GC会回收该引用的对象内存</li>
+<li>可以用来实现<strong>高速缓存</strong></li>
+</ul>
+<p><strong>弱引用（Weak Reference）：</strong></p>
+<p>String str = new String(“abc”)<br>WeakReference<String> weakStr = new WeakReference<String>(str)//弱引用</p>
+<ul>
+<li><strong>非必须</strong>的对象，比软引用更弱一些</li>
+<li>GC时会被回收</li>
+<li>被回收的概率也不大，因为GC线程优先级比较低</li>
+<li>适用于<strong>引用偶尔被使用且不影响垃圾收集的对象</strong></li>
+</ul>
+<p><strong>虚引用（PhantomReference）：</strong></p>
+<p>String str = new String (“abc”)<br>ReferenceQueue queue = new ReferenceQueue();<br>PhantomReference ref = new PhantomReference(str , queue);</p>
+<ul>
+<li>不会决定对象的生命周期</li>
+<li>任何时候都可能被垃圾收集器回收</li>
+<li>跟踪对象被垃圾收集器回收的活动，起<strong>哨兵作用</strong></li>
+<li>必须和<strong>引用队列ReferenceQueue</strong>联合使用</li>
+</ul>
+<p><strong>总结：</strong></p>
+<ul>
+<li>强引用&gt;软引用&gt;弱引用&gt;虚引用</li>
+</ul>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/JavaGC的引用.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/35ef32949f717f8615d4e262400607ff.jpeg" alt="JavaGC的引用"></a></p>
+<p><strong>引用队列：</strong></p>
+<ul>
+<li>作用：这样可以<strong>在外部对对象进行监控</strong>，如果一个对象即将被回收，则可以通过ReferenceQueue来进行操作</li>
+<li>无实际存储结构，存储逻辑依赖于内部节点之间的关系来表达</li>
+<li>存储关联的且被GC的软引用，弱引用以及虚引用</li>
+<li>原理：<strong>一个对象如果被回收，其弱引用会被放置到引用队列中</strong></li>
+</ul>
+<p><strong>应用：</strong></p>
+<p>利用软引用和弱引用解决OOM问题：假如有一个应用需要读取大量的本地图片，如果每次读取图片都从硬盘读取，则会严重影响性能，但是如果全部加载到内存当中，又有可能造成内存溢出，此时使用软引用可以解决这个问题。</p>
+<p>设计思路是：用一个HashMap来保存图片的路径和相应图片对象关联的软引用之间的映射关系，在内存不足时，JVM会自动回收这些缓存图片对象所占用的空间，从而有效地避免了OOM的问题。</p>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/CAS-Optimistic-lock/">上一篇</a></div><div class="copyright"><p>© 2020 <a href="http://www.kongkongbai.com">kongkongbai</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>

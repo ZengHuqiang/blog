@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> MySQL事务模块 · 空空白的博客</title><meta name="description" content="MySQL事务模块 - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.com/atom.xml" title="空空白的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/achjqz" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/atom.xml" target="_self">RSS</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">MySQL事务模块</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a></div><div class="post-content"><h3 id="MySql只有InnoDB支持事务系统"><a href="#MySql只有InnoDB支持事务系统" class="headerlink" title="MySql只有InnoDB支持事务系统"></a>MySql只有InnoDB支持事务系统</h3><ul>
+<li><strong>MySQL</strong>默认隔离级别为：<strong>Repeatable Read</strong></li>
+<li><strong>Oracle</strong>默认隔离级别为：<strong>Read Commited</strong></li>
+</ul>
+<h3 id="1-数据库的四大特性——ACID"><a href="#1-数据库的四大特性——ACID" class="headerlink" title="1.数据库的四大特性——ACID"></a>1.数据库的四大特性——ACID</h3><ul>
+<li><strong>Atomicity</strong>（原子性）：一个事务中的操作要么全部执行，要么全部不执行</li>
+<li><strong>Consistency</strong>（一致性）：指事务开始之前和结束之后，数据库的完整性约束没有被破坏</li>
+<li><strong>Isolation</strong>（隔离性）：指多个事务并发访问时，事务之间是隔离的，一个事务不应该影响其它事务运行效果</li>
+<li><strong>Durability</strong>（持久性）：事务完成之后对数据库的修改是持久性的，不会被回滚</li>
+</ul>
+<h3 id="2-事务的隔离性"><a href="#2-事务的隔离性" class="headerlink" title="2.事务的隔离性"></a>2.事务的隔离性</h3><p><a href="https://blog.csdn.net/CoderBruis/article/details/102692753" target="_blank" rel="noopener">参考博客</a></p>
+<h4 id="2-1事务的隔离级别"><a href="#2-1事务的隔离级别" class="headerlink" title="2.1事务的隔离级别"></a>2.1事务的隔离级别</h4><ul>
+<li><strong>Read uncommitted</strong>:一个事务可以读取另一个未提交事务的数据<strong>（无法避免脏读）</strong></li>
+<li><strong>Read committed</strong>:一个事务要等另一个事务提交后才能读取数据（<strong>无法避免update和insert操作带来的幻读问题</strong>）</li>
+<li><strong>Repeatable read:</strong>就是在开始读取数据（事务开启）时，不再允许修改操作(<strong>无法避免insert操作带来的幻读问题</strong>)</li>
+<li><strong>Serializable:</strong>事务串行化顺序执行</li>
+</ul>
+<h4 id="2-2事务并发访问可能导致的问题"><a href="#2-2事务并发访问可能导致的问题" class="headerlink" title="2.2事务并发访问可能导致的问题"></a>2.2事务并发访问可能导致的问题</h4><p><a href="http://39.107.124.120/wp-content/uploads/2020/04/事务隔离级别.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/88cc8399da5f90a0be2a5630f426d15f.jpeg" alt="事务隔离级别"></a></p>
+<ul>
+<li><strong>脏读</strong>：脏读又称无效数据读出。一个事务读取另外一个事务还没有提交的数据叫脏读。</li>
+<li><strong>不可重复读</strong>：（同时操作，事务一分别读取事务二操作时和提交后的数据，读取的记录内容不一致）不可重复读是指在同一个事务内，两个相同的查询返回了不同的结果。</li>
+<li><strong>幻读</strong>：和可重复读类似，但是事务二的数据操作仅仅是插入和删除，不是修改数据，读取的记录数量前后不一致</li>
+<li>InnoDB Repeatable read级别下可以避免幻读</li>
+</ul>
+<h4 id="2-3InnoDB-Repeatable-read级别下如何避免幻读"><a href="#2-3InnoDB-Repeatable-read级别下如何避免幻读" class="headerlink" title="2.3InnoDB Repeatable read级别下如何避免幻读"></a>2.3InnoDB <strong>Repeatable read级别下如何避免幻读</strong></h4><p><a href="https://blog.csdn.net/xifeijian/article/details/20313977#t10" target="_blank" rel="noopener">（参考博客）</a></p>
+<ul>
+<li>表象：快照读（非阻塞读）——伪MVCC（多版本的并发控制）</li>
+<li>内在：next-key锁（行锁+gap锁）</li>
+</ul>
+<h5 id="2-3-1当前读和快照读"><a href="#2-3-1当前读和快照读" class="headerlink" title="2.3.1当前读和快照读"></a>2.3.1当前读和快照读</h5><ul>
+<li>当前读：加了锁的增删改查操作(select…lock in share mode;select…for update; update 、delete、insert)</li>
+<li>快照读：不加锁的非阻塞读，select</li>
+</ul>
+<p><strong>区别：</strong></p>
+<ul>
+<li>read committed级别下。当前读与快照读读取的版本一样。</li>
+<li>repeatable read 级别下，当前读返回的是数据的最新版本，<strong>快照读返回的可能数据未修改前的版本也可能是最新的数据版本</strong>。因为在RR级别下，事务调用快照读的时机很重要，创建快照的时机决定了读取的版本。</li>
+</ul>
+<h5 id="2-3-2RC、RR级别下InnoDB的非阻塞读-快照读-如何实现"><a href="#2-3-2RC、RR级别下InnoDB的非阻塞读-快照读-如何实现" class="headerlink" title="2.3.2RC、RR级别下InnoDB的非阻塞读(快照读)如何实现"></a>2.3.2RC、RR级别下InnoDB的非阻塞读(快照读)如何实现</h5><ul>
+<li>数据行里的<strong>DB_TRX_ID、DB_ROLL_PTR、DB_ROW_ID</strong>字段</li>
+</ul>
+<p>1.DB_TRX_ID—-该字段标明最近一次对数据做修改（事务ID）<br>2.DB_ROLL_PTR—-回滚指针，写入<strong>回滚段的undo日志</strong><br>3.DB__ROW_ID —-行号 随着新行出现单调递增的id</p>
+<ul>
+<li>undo日志：主要分为<strong>insert undo</strong>日志（事务回滚涉及）和<strong>uodate undo</strong>日志（事务回滚和快照读都涉及）对事务变更就会产生undo记录，存储的是老版数据，事务回滚需要</li>
+<li>read view：可见性判断来决定当前看的是哪个版本数据</li>
+</ul>
+<p><strong>实现的具体过程：</strong></p>
+<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/快照读的实现.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/0eb3675fe478e80f6681717c2ed10aec.png" alt="快照读的实现"></a></p>
+<p>比如现在有一个记录Field1、Field2、Field3数据分别为11、12、13，现在事务要修改该记录，将Field2修改为32。则这条记录首先会加载X锁，首先undo log中会拷贝一条修改前的记录，并赋值DB_ROW_ID。此时被X锁锁住的记录的DB_TRX_ID、DB_ROLL_PTR、DB_ROW_ID分别进行赋值，并且DB_ROLL_PTR的记录会指向undo log中的DB_ROW_ID的值。</p>
+<p><strong>RR的快照读出现旧数据的原因：</strong></p>
+<p>如果在数据更新之前进行了一次快照读，事务会保存数据库的快照在undo log中，如果此时其他事务更新了数据，那么快照读依旧会沿用undo log中的数据，此时数据不再是最新数据。</p>
+<h5 id="2-3-3内在：next-key锁（行锁-Gap锁）"><a href="#2-3-3内在：next-key锁（行锁-Gap锁）" class="headerlink" title="2.3.3内在：next-key锁（行锁+Gap锁）"></a>2.3.3内在：next-key锁（行锁+Gap锁）</h5><h5 id="2-3-3Gap锁"><a href="#2-3-3Gap锁" class="headerlink" title="2.3.3Gap锁"></a>2.3.3Gap锁</h5><p><strong>什么时候会用到Gap锁？</strong></p>
+<ul>
+<li>只有在RR和Serializable级别下</li>
+<li>如果<strong>where条件全部命中</strong>，<strong>则不会用Gap锁</strong>，只会加行锁（因为如果条件全部命中，记录就存在唯一性，新增的记录不会产生幻读现象）</li>
+<li>如果<strong>where条件部分命中或者全不命中，则会加Gap锁</strong></li>
+<li>Gap锁会用在<strong>非唯一索引或者不走索引的当前读</strong>中</li>
+</ul>
+<ol>
+<li>非唯一索引：加锁范围为与相邻非唯一键的区间中，左边&lt;=gap&lt;=右边，还与主键的字母排序有关（<strong>本质是与B+数的排列有关</strong>）</li>
+<li>不走索引：会锁住所有的键</li>
+</ol>
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/MySQL/MySQLGrammar/">上一篇</a><a class="next" href="/MySQL/MySQLLock/">下一篇</a></div><div class="copyright"><p>© 2020 <a href="http://www.kongkongbai.com">kongkongbai</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>
