@@ -4,3 +4,6 @@
 [submodule "Common"]
 	path = themes/apollo
 	url = https://github.com/ZengHuqiang/hexo-theme-apollo.git
+[submodule "Com"]
+	path = themes/apollo
+	url = https://github.com/ZengHuqiang/hexo-theme-apollo.git
