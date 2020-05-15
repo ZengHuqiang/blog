@@ -19,17 +19,17 @@
 <li>Class类也是类的一种，class则是关键字</li>
 <li>Class类只有一个<strong>私有的构造函数</strong>，只有JVM能够创建Class类的实例</li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/Class类特点01.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/0c51b5d7a87a9fc22099fbe2adf1c35d.png" alt="Class类特点01"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/0c51b5d7a87a9fc22099fbe2adf1c35d.png" alt="Class类特点01"></p>
 <ul>
 <li>JVM中只有<strong>唯一一个和类相对应的Class对象</strong>来描述其类型信息</li>
 </ul>
-<h4 id="3-2获取Class对象的三种方式"><a href="#3-2获取Class对象的三种方式" class="headerlink" title="3.2获取Class对象的三种方式"></a>3.2获取Class对象的三种方式</h4><p><a href="http://39.107.124.120/wp-content/uploads/2020/04/Class对象的获取.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/6ea1f8f5d751a9558d49e0da4fdf7a90.png" alt="Class对象的获取"></a></p>
+<h4 id="3-2获取Class对象的三种方式"><a href="#3-2获取Class对象的三种方式" class="headerlink" title="3.2获取Class对象的三种方式"></a>3.2获取Class对象的三种方式</h4><p>[<img src="https://pic.rmb.bdstatic.com/bjh/6ea1f8f5d751a9558d49e0da4fdf7a90.png" alt="Class对象的获取"></p>
 <ul>
 <li>Object–&gt;getClass()</li>
 <li>任意数据类型（包括基本数据类型）都有一个“静态”的class属性</li>
 <li>通过Class类的静态方法：<strong>forName（String className）最常用（不需要导入相关包或者获取对象，只需要知道类路径即可）</strong></li>
 </ul>
-<h3 id="4-反射的主要用法"><a href="#4-反射的主要用法" class="headerlink" title="4.反射的主要用法"></a>4.反射的主要用法</h3><h4 id="4-1获取类的构造函数"><a href="#4-1获取类的构造函数" class="headerlink" title="4.1获取类的构造函数"></a>4.1获取类的构造函数</h4><p><a href="http://39.107.124.120/wp-content/uploads/2020/04/反射获取构造方法.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/374f098c193599cefa9cebcf6520929d.png" alt="反射获取构造方法"></a></p>
+<h3 id="4-反射的主要用法"><a href="#4-反射的主要用法" class="headerlink" title="4.反射的主要用法"></a>4.反射的主要用法</h3><h4 id="4-1获取类的构造函数"><a href="#4-1获取类的构造函数" class="headerlink" title="4.1获取类的构造函数"></a>4.1获取类的构造函数</h4><p>[<img src="https://pic.rmb.bdstatic.com/bjh/374f098c193599cefa9cebcf6520929d.png" alt="反射获取构造方法"></p>
 <p><strong>1.批量的方法：</strong></p>
 <ul>
 <li>public Constructor[] getConstructors() : 获取<strong>所有的“公有”</strong>构造方法</li>
@@ -42,10 +42,10 @@
 </ul>
 <p><strong>调用构造方法：</strong></p>
 <p>Constructor –&gt;newInstance（Object… initArgs）</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/反射调用私有构造方法.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/def9a9fcf15f48cfe0741f0d4c3851d1.png" alt="反射调用私有构造方法"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/def9a9fcf15f48cfe0741f0d4c3851d1.png" alt="反射调用私有构造方法"></p>
 <p><strong>在调用私有方法时</strong>，需要设置con.<strong>setAccessible(true);</strong></p>
-<h4 id="4-2获取类的成员变量"><a href="#4-2获取类的成员变量" class="headerlink" title="4.2获取类的成员变量"></a>4.2获取类的成员变量</h4><p><a href="http://39.107.124.120/wp-content/uploads/2020/04/反射获取成员变量实例.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/21daacf681eed1d8b08d00459057da49.png" alt="反射获取成员变量实例"></a></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/反射获取成员变量.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/c119cd927c0acb5be12d9310331e81d9.jpeg" alt="反射获取成员变量"></a></p>
+<h4 id="4-2获取类的成员变量"><a href="#4-2获取类的成员变量" class="headerlink" title="4.2获取类的成员变量"></a>4.2获取类的成员变量</h4><p>[<img src="https://pic.rmb.bdstatic.com/bjh/21daacf681eed1d8b08d00459057da49.png" alt="反射获取成员变量实例"></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/c119cd927c0acb5be12d9310331e81d9.jpeg" alt="反射获取成员变量"></p>
 <ul>
 <li>使用set设置实例对象的属性值：<strong>filed.set(实例对象，参数值)</strong></li>
 <li>在设置私有变量时，需要设置<strong>field.setAccessible(true)</strong></li>

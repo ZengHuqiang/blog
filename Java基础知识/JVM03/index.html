@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> JMM的可见性 · 空空白的博客</title><meta name="description" content="JMM的可见性 - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.comundefined" title="空空白的博客"><meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
-</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">JMM的可见性</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/Java/">#Java</a></div><div class="post-content"><h3 id="1-JMM简介"><a href="#1-JMM简介" class="headerlink" title="1.JMM简介"></a>1.JMM简介</h3><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/JMM内存模型.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/88652a11e96b574703cf35d6ccbd54e3.png" alt="JMM内存模型"></a></p>
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">JMM的可见性</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/Java/">#Java</a></div><div class="post-content"><h3 id="1-JMM简介"><a href="#1-JMM简介" class="headerlink" title="1.JMM简介"></a>1.JMM简介</h3><p>[<img src="https://pic.rmb.bdstatic.com/bjh/88652a11e96b574703cf35d6ccbd54e3.png" alt="JMM内存模型"></p>
 <p>Java内存模型JMM本身是一种抽象的概念，并不真实存在，它描述的是一组规则或规范，通过这组规范定义了程序中各个变量（包括实例字段、静态字段和构成数组对象的元素）的访问方式</p>
 <p><strong>理解：每个线程都有自己的工作内存，相互独立；线程之间的共享资源都是存储在主内存中，线程要想获取共享资源，只能获取其在主内存的副本，修改完后返回至主内存以达到通信的目的。</strong></p>
 <h4 id="1-1JMM中的主内存"><a href="#1-1JMM中的主内存" class="headerlink" title="1.1JMM中的主内存"></a>1.1JMM中的主内存</h4><ul>
@@ -30,7 +30,7 @@
 <li>无法通过<strong>happens-before原则</strong>推导出来的，才能进行指令重排序</li>
 </ul>
 <h4 id="2-2happens-before原则"><a href="#2-2happens-before原则" class="headerlink" title="2.2happens-before原则"></a>2.2happens-before原则</h4><p>A操作的结果需要对B操作可见，则A与B存在happens-before关系</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/happens-before八大原则.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/fd3bef59c906055fc8146164b88fdc9e.jpeg" alt="happens-before八大原则"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/fd3bef59c906055fc8146164b88fdc9e.jpeg" alt="happens-before八大原则"></p>
 <p><strong>概念：</strong></p>
 <ul>
 <li>如果两个操作不满足上述任意一个happens-before规则，那么这两个操作就没有顺序的保障，JVM可以对这两个操作进行重排序</li>
@@ -40,10 +40,10 @@
 <li>保证被volatile修饰的共享变量对所有线程总是可见</li>
 <li>禁止指令重排序优化</li>
 </ul>
-<h5 id="2-3-1volatile的可见性理解："><a href="#2-3-1volatile的可见性理解：" class="headerlink" title="2.3.1volatile的可见性理解："></a><strong>2.3.1volatile的可见性理解：</strong></h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/volatile的可见性01.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/51163ab7384797c7d1da63721184fbed.jpeg" alt="volatile的可见性01"></a></p>
+<h5 id="2-3-1volatile的可见性理解："><a href="#2-3-1volatile的可见性理解：" class="headerlink" title="2.3.1volatile的可见性理解："></a><strong>2.3.1volatile的可见性理解：</strong></h5><p>[<img src="https://pic.rmb.bdstatic.com/bjh/51163ab7384797c7d1da63721184fbed.jpeg" alt="volatile的可见性01"></p>
 <p>value++的操作不具备原子性（<strong>原子操作</strong>：是指<strong>不会被线程调度机制打断</strong>的操作）：如果在读取value值和返回新value值期间另一个线程获取了久的value就会导致线程安全问题</p>
 <p>为了避免线程安全问题，需要使用sychronized进行同步限制，此时就没有必要使用volatile修饰</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/volatile的可见性02.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/fabbf9b6b8675562647a822510ffe010.jpeg" alt="volatile的可见性02"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/fabbf9b6b8675562647a822510ffe010.jpeg" alt="volatile的可见性02"></p>
 <p>shutdown的操作具备原子性，使用volatile修饰比较合理</p>
 <h5 id="2-3-2volatile变量的机制"><a href="#2-3-2volatile变量的机制" class="headerlink" title="2.3.2volatile变量的机制"></a>2.3.2volatile变量的机制</h5><ul>
 <li>当写一个volatile变量时，JMM会把该线程对应的工作内存中共享变量值刷新到主内存中</li>
@@ -58,7 +58,7 @@
 <li>保证特定操作的执行顺序</li>
 <li>保证某些变量的内存可见性</li>
 </ol>
-<h5 id="2-3-4单例的双重检测实现中的问题"><a href="#2-3-4单例的双重检测实现中的问题" class="headerlink" title="2.3.4单例的双重检测实现中的问题"></a>2.3.4单例的双重检测实现中的问题</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/单例的双重检测实现01.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/cb621d85d6104e69887c99e3a14ea28a.jpeg" alt="单例的双重检测实现01"></a></p>
+<h5 id="2-3-4单例的双重检测实现中的问题"><a href="#2-3-4单例的双重检测实现中的问题" class="headerlink" title="2.3.4单例的双重检测实现中的问题"></a>2.3.4单例的双重检测实现中的问题</h5><p>[<img src="https://pic.rmb.bdstatic.com/bjh/cb621d85d6104e69887c99e3a14ea28a.jpeg" alt="单例的双重检测实现01"></p>
 <p>instance = new Singleton（）这一步中分为三个阶段，其中1、2阶段有可能会被重排优化而导致线程安全问题</p>
 <p>解决：</p>
 <p>private <strong>volatile</strong> static Singleton instance：给实例对象添加volatile字段，使之初始化过程不能被重排序</p>

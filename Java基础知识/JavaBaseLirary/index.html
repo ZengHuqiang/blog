@@ -16,7 +16,7 @@
 <li><strong>多线程</strong>操作字符串缓冲区下操作大量数据 StringBuffer；</li>
 <li><strong>单线程</strong>操作字符串缓冲区下操作大量数据 StringBuilder。</li>
 </ul>
-<h3 id="2-Java异常体系"><a href="#2-Java异常体系" class="headerlink" title="2.Java异常体系"></a>2.Java异常体系</h3><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Java异常体系.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/821027c9550bf00548648ab1f854ec22.png" alt="Java异常体系"></a></p>
+<h3 id="2-Java异常体系"><a href="#2-Java异常体系" class="headerlink" title="2.Java异常体系"></a>2.Java异常体系</h3><p>[<img src="https://pic.rmb.bdstatic.com/bjh/821027c9550bf00548648ab1f854ec22.png" alt="Java异常体系"></p>
 <h4 id="2-1Error和Exception的区别"><a href="#2-1Error和Exception的区别" class="headerlink" title="2.1Error和Exception的区别"></a>2.1Error和Exception的区别</h4><ul>
 <li>Error：程序无法处理的系统错误，编译器不做检查</li>
 <li>Exception：程序可以处理的异常，捕获后可能恢复</li>
@@ -58,7 +58,7 @@
 <li>延迟捕获：异常的捕获和处理应尽可能延迟，让掌握更多信息的作用域来处理异常</li>
 </ul>
 <h4 id="2-4高效主流的异常处理框架"><a href="#2-4高效主流的异常处理框架" class="headerlink" title="2.4高效主流的异常处理框架"></a>2.4高效主流的异常处理框架</h4><p>在用户看来，应用系统发生的所有异常都是应用系统内部产生的异常</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/异常处理框架.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/d2417a9d76d6c6be651f044fc755ca11.jpeg" alt="异常处理框架"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/d2417a9d76d6c6be651f044fc755ca11.jpeg" alt="异常处理框架"></p>
 <ul>
 <li>设计一个通用的继承自RuntimeException的异常来同一处理</li>
 <li>其余异常都统一转译为上述异常AppException</li>
@@ -71,7 +71,7 @@
 <li>异常对象实例需要保护栈快照等信息，开销较大</li>
 </ul>
 <h3 id="3-Java集合框架"><a href="#3-Java集合框架" class="headerlink" title="3.Java集合框架"></a>3.Java集合框架</h3><p><a href="http://39.107.124.120/2020/03/13/java后端面试-java知识/" target="_blank" rel="noopener">结合文章参考</a></p>
-<h4 id="3-1List和Set"><a href="#3-1List和Set" class="headerlink" title="3.1List和Set"></a>3.1List和Set</h4><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/List和Set.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/4bbde0c7ecfecc721be12c7bbf4e6452.jpeg" alt="List和Set"></a></p>
+<h4 id="3-1List和Set"><a href="#3-1List和Set" class="headerlink" title="3.1List和Set"></a>3.1List和Set</h4><p>[<img src="https://pic.rmb.bdstatic.com/bjh/4bbde0c7ecfecc721be12c7bbf4e6452.jpeg" alt="List和Set"></p>
 <ul>
 <li>ArrayList：线程不安全、效率高、由数组实现</li>
 <li>LinkedList：线程不安全、效率高、由链表实现</li>
@@ -87,11 +87,11 @@
 </ul>
 <p><strong>回答：List是一个接口，ArrayList和LinkedList是它的实现，ArrayList是由数组来实现，LinkedList是由链表来实现。</strong></p>
 <h4 id="3-2-Map"><a href="#3-2-Map" class="headerlink" title="3.2 Map"></a>3.2 Map</h4><h4 id="3-2-1HashMap、HashTable、ConccurentHashMap区别"><a href="#3-2-1HashMap、HashTable、ConccurentHashMap区别" class="headerlink" title="3.2.1HashMap、HashTable、ConccurentHashMap区别"></a>3.2.1HashMap、HashTable、ConccurentHashMap区别</h4><p><strong>1.HashMap（<a href="https://www.cnblogs.com/yuanfy008/p/11073246.html" target="_blank" rel="noopener">参考博客</a>）</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/HashMap原理01.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/21e47175a597e8eb795ede00f0ad6a04.jpeg" alt="HashMap原理01"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/21e47175a597e8eb795ede00f0ad6a04.jpeg" alt="HashMap原理01"></p>
 <ul>
 <li>实现：数组+链表（+<strong>红黑树Java8及以后</strong>）</li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/HashMap原理02.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/bf2b4c189991e0fa6b0c479f7de942b8.jpeg" alt="HashMap原理02"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/bf2b4c189991e0fa6b0c479f7de942b8.jpeg" alt="HashMap原理02"></p>
 <ul>
 <li>分析：如果一个桶中的链表存储了过多元素，会导致HashMap性能降低，<strong>Java8以后定义了一个TREEIFY_THRESHOLD（默认为8，超过8会被改造，如果又低于6则会转回链表）常量来判断是否将链表转换为红黑树结构</strong></li>
 </ul>
@@ -110,7 +110,7 @@
 <li>若节点已经存在，则用新值替换旧值</li>
 </ol>
 <p><strong>HashMap：从获取hash到散列的过程：</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/HashMap原理03.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/8fd715e49e4e8e90f4bf92836fda1397.jpeg" alt="HashMap原理03"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/8fd715e49e4e8e90f4bf92836fda1397.jpeg" alt="HashMap原理03"></p>
 <ul>
 <li>n-1作为最后的获取桶值的参数，<strong>设置table容量时都是2的倍数</strong></li>
 </ul>
@@ -146,7 +146,7 @@
 <ul>
 <li>早期：通过锁细粒度化，<strong>将整锁拆解成多个锁进行优化</strong></li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/ConcurrentHashMap早期原理.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/0c1ee941c8898c4b7ce512bdde87d9b2.jpeg" alt="ConcurrentHashMap早期原理"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/0c1ee941c8898c4b7ce512bdde87d9b2.jpeg" alt="ConcurrentHashMap早期原理"></p>
 <p>理解：将桶数组分为多个段，每个段使用一个锁（<strong>segment分段锁</strong>），在并发处理不同段的数据时，线程之间互不影响</p>
 <ul>
 <li>Java8及之后：<strong>CAS+sychronized</strong>使锁更细化</li>
@@ -177,7 +177,7 @@
 <li>AQS是java.util.concurrent.locks包以及一些常用类比如Semophore，Reentrantlock等类的基础</li>
 </ul>
 <p><strong>J.U.C包的分类</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/JUC包的分类.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/048eee00c41d3591d0627d36ee4964ca.jpeg" alt="JUC包的分类"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/048eee00c41d3591d0627d36ee4964ca.jpeg" alt="JUC包的分类"></p>
 <ul>
 <li>线程执行器executor</li>
 <li>锁locks</li>
@@ -188,30 +188,30 @@
 <h4 id="4-1并发工具类"><a href="#4-1并发工具类" class="headerlink" title="4.1并发工具类"></a>4.1并发工具类</h4><h5 id="4-1-1闭锁CountDownLatch：让主线程等待一组事件发生后继续执行"><a href="#4-1-1闭锁CountDownLatch：让主线程等待一组事件发生后继续执行" class="headerlink" title="4.1.1闭锁CountDownLatch：让主线程等待一组事件发生后继续执行"></a>4.1.1闭锁CountDownLatch：让主线程等待一组事件发生后继续执行</h5><ul>
 <li>事件指的的是CountDownLatch里的countDown()方法；每次countDonw()方法会使cnt参数减1</li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/CountDownLatch01.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/313ad5604b8716d8618aa9272bdbd20a.jpeg" alt="CountDownLatch01"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/313ad5604b8716d8618aa9272bdbd20a.jpeg" alt="CountDownLatch01"></p>
 <p>使用：</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/CountDownLatch02.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/e23025026885387e6911bd6ebab10eea.jpeg" alt="CountDownLatch02"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/e23025026885387e6911bd6ebab10eea.jpeg" alt="CountDownLatch02"></p>
 <h5 id="4-1-2栅栏CyclicBarrier：阻塞当前线程等待其他线程"><a href="#4-1-2栅栏CyclicBarrier：阻塞当前线程等待其他线程" class="headerlink" title="4.1.2栅栏CyclicBarrier：阻塞当前线程等待其他线程"></a>4.1.2栅栏CyclicBarrier：阻塞当前线程等待其他线程</h5><ul>
 <li>等待其他线程，且会阻塞当前线程，所有线程必须同时到达栅栏位置后，才能继续执行</li>
 <li>所有线程到达栅栏处，可以触发执行另外一个预先设定的线程</li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/CyclicBarrier01.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/800fefdfa3fa60f5355fe3691775743f.jpeg" alt="CyclicBarrier01"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/800fefdfa3fa60f5355fe3691775743f.jpeg" alt="CyclicBarrier01"></p>
 <p><strong>与CountDownLatch的区别：一个阻塞当前线程，一个阻塞主线程</strong></p>
 <p>使用：</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/CyclicBarrier02.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/564288a05dd3598f8e02598f7addc7d7.png" alt="CyclicBarrier02"></a></p>
-<h5 id="4-1-3信号量Semaphore：控制某个资源可被同时访问的线程个数"><a href="#4-1-3信号量Semaphore：控制某个资源可被同时访问的线程个数" class="headerlink" title="4.1.3信号量Semaphore：控制某个资源可被同时访问的线程个数"></a>4.1.3信号量Semaphore：控制某个资源可被同时访问的线程个数</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Semaphore的使用.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/94fcc61ce85784cf0fb532dac8d38c46.png" alt="Semaphore的使用"></a></p>
-<h5 id="4-1-4交换器Exchanger：两个线程到达同步点后，相互交换数据"><a href="#4-1-4交换器Exchanger：两个线程到达同步点后，相互交换数据" class="headerlink" title="4.1.4交换器Exchanger：两个线程到达同步点后，相互交换数据"></a>4.1.4交换器Exchanger：两个线程到达同步点后，相互交换数据</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Exchanger.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/2f1b0979bde776130649cf459128ef32.jpeg" alt="Exchanger"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/564288a05dd3598f8e02598f7addc7d7.png" alt="CyclicBarrier02"></p>
+<h5 id="4-1-3信号量Semaphore：控制某个资源可被同时访问的线程个数"><a href="#4-1-3信号量Semaphore：控制某个资源可被同时访问的线程个数" class="headerlink" title="4.1.3信号量Semaphore：控制某个资源可被同时访问的线程个数"></a>4.1.3信号量Semaphore：控制某个资源可被同时访问的线程个数</h5><p>[<img src="https://pic.rmb.bdstatic.com/bjh/94fcc61ce85784cf0fb532dac8d38c46.png" alt="Semaphore的使用"></p>
+<h5 id="4-1-4交换器Exchanger：两个线程到达同步点后，相互交换数据"><a href="#4-1-4交换器Exchanger：两个线程到达同步点后，相互交换数据" class="headerlink" title="4.1.4交换器Exchanger：两个线程到达同步点后，相互交换数据"></a>4.1.4交换器Exchanger：两个线程到达同步点后，相互交换数据</h5><p>[<img src="https://pic.rmb.bdstatic.com/bjh/2f1b0979bde776130649cf459128ef32.jpeg" alt="Exchanger"></p>
 <p>使用：</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/Exchanger的使用.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/09c54c8fb9c8c00ddfbd157410337dd6.jpeg" alt="Exchanger的使用"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/09c54c8fb9c8c00ddfbd157410337dd6.jpeg" alt="Exchanger的使用"></p>
 <ul>
 <li>当两个线程都到达同步点，即<strong>同时运行到exchange()方法</strong>时，两个线程交换数据然后继续运行</li>
 </ul>
-<h5 id="4-1-5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作"><a href="#4-1-5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作" class="headerlink" title="4.1.5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作"></a>4.1.5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/BlockingQueue01.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/85f6536bafc605aeffc27451355a8b5b.jpeg" alt="BlockingQueue01"></a></p>
+<h5 id="4-1-5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作"><a href="#4-1-5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作" class="headerlink" title="4.1.5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作"></a>4.1.5阻塞队列BlockingQueue：提供可阻塞的入队和出队操作</h5><p>[<img src="https://pic.rmb.bdstatic.com/bjh/85f6536bafc605aeffc27451355a8b5b.jpeg" alt="BlockingQueue01"></p>
 <ul>
 <li>主要用于<strong>生产者-消费者模式</strong>，在多线程场景时生产者线程在队列尾部添加元素，而消费者线程则在队列头部消费元素，通过这种方式能够达到将任务的生成和消费进行隔离的目的</li>
 </ul>
 <p>实现方式：</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/BlockingQueue02.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/68bb1c83cd8a1094606e477b162e9e5d.jpeg" alt="BlockingQueue02"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/68bb1c83cd8a1094606e477b162e9e5d.jpeg" alt="BlockingQueue02"></p>
 </div></article></div></main><footer><div class="paginator"><a class="prev" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JavaThreadPool/">上一篇</a><a class="next" href="/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/JavaGeneric/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
     clientID: '2cdbd7aa1fe9fd30e3c5',     
     clientSecret: '0d12d75f0e1788ffc85796b5a38bdddbbf40c77d',     

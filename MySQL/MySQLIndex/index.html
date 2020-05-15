@@ -59,7 +59,7 @@
 <li>若不满足以上条件,innoDB内部会生成一个隐藏主键(密集索引)</li>
 <li>非主键索引存储 <strong>相关键位与其对应的主键值</strong>,之后查找主键索引来获取数据,<strong>包含两次查找</strong></li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/InnoDB的密集索引.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/e8c6cc75986aa242aa67426e2d7dcd1c.jpeg" alt="InnoDB的密集索引"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/e8c6cc75986aa242aa67426e2d7dcd1c.jpeg" alt="InnoDB的密集索引"></p>
 <p>非主键索引的两次查找</p>
 <ul>
 <li>在<strong>非主键稀疏索引</strong>中查找出该行数据对应的主键</li>
@@ -69,13 +69,13 @@
 <ul>
 <li>无论主键还是什么都是<strong>稀疏索引</strong></li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/MyISAM稀疏索引.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/c976d0ec57537f269f37b43d62e78bca.jpeg" alt="MyISAM稀疏索引"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/c976d0ec57537f269f37b43d62e78bca.jpeg" alt="MyISAM稀疏索引"></p>
 <ul>
 <li>主键索引和辅助键索引没有区别,只是存储的键值不一样</li>
 <li><strong>索引和数据分开存储</strong></li>
 <li>稀疏索引查找后会得到一个数据的存储地址,对应查询的结果</li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/InnoDB和MyISAM文件存储区别.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/0944b3986fd7e6ecfe21e80d7813965c.png" alt="InnoDB和MyISAM文件存储区别"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/0944b3986fd7e6ecfe21e80d7813965c.png" alt="InnoDB和MyISAM文件存储区别"></p>
 <h3 id="3-如何定位并优化MySQL"><a href="#3-如何定位并优化MySQL" class="headerlink" title="3.如何定位并优化MySQL"></a>3.如何定位并优化MySQL</h3><p><strong>大致思路:</strong></p>
 <ul>
 <li>根据<strong>慢日志</strong>定位慢查询sql</li>
@@ -93,7 +93,7 @@
 <li>type字段 : <strong>index、all</strong>表示全表查询,可能需要优化</li>
 <li>extra字段 :</li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/04/extra字段.jpg" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/80e1fcabc5972452605b4168769a1198.jpeg" alt="extra字段"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/80e1fcabc5972452605b4168769a1198.jpeg" alt="extra字段"></p>
 <p><strong>修改优化sql:</strong></p>
 <ul>
 <li>添加索引 : <strong>alter table</strong> person_info <strong>add inedex</strong> idx_name(name)</li>

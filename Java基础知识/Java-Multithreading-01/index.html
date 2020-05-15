@@ -7,8 +7,7 @@
 <li>真正运行的是线程，进程只是线程的容器，将所有有关的东西放在一起，并在中间某些位置进行隔离</li>
 <li>每一个进程对应一个JVM实例，多个线程共享JVM里的堆（理解？）</li>
 </ul>
-<h3 id="2-Thread中的start和run方法的区别"><a href="#2-Thread中的start和run方法的区别" class="headerlink" title="2.Thread中的start和run方法的区别"></a>2.Thread中的start和run方法的区别</h3><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/start和run的区别.png" target="_blank" rel="noopener"><img src="http://39.107.124.120/wp-content/uploads/2020/03/start%E5%92%8Crun%E7%9A%84%E5%8C%BA%E5%88%AB-300x139.png" alt="start(http://39.107.124.120/wp-content/uploads/2020/03/start和run的区别-300x139.png)和run()的区别"></a></p>
-<ul>
+<h3 id="2-Thread中的start和run方法的区别"><a href="#2-Thread中的start和run方法的区别" class="headerlink" title="2.Thread中的start和run方法的区别"></a>2.Thread中的start和run方法的区别</h3><ul>
 <li>调用<strong>start（）</strong>方法会<strong>创建一个新的子线程</strong>并启动</li>
 <li>调用<strong>run（）</strong>方法知识Thread中一个普通方法的调用</li>
 </ul>
@@ -28,7 +27,7 @@
 <li>回调函数传参</li>
 </ul>
 <h3 id="5-如何处理线程的返回值"><a href="#5-如何处理线程的返回值" class="headerlink" title="5.如何处理线程的返回值"></a>5.如何处理线程的返回值</h3><h4 id="5-1主线程等待法"><a href="#5-1主线程等待法" class="headerlink" title="5.1主线程等待法"></a>5.1主线程等待法</h4><p>如果不等待子线程执行完，就无法获取子线程中的数据。</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/主线程等待法.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/53e5cd274189cc976014bad0cb176a34.png" alt="主线程等待法"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/53e5cd274189cc976014bad0cb176a34.png" alt="主线程等待法"></p>
 <p>缺点：需要自己实现等待循环的逻辑代码，如果逻辑复杂代码会十分臃肿</p>
 <h4 id="5-2使用Thread类的join（）阻塞当前线程以等待子线程处理完毕"><a href="#5-2使用Thread类的join（）阻塞当前线程以等待子线程处理完毕" class="headerlink" title="5.2使用Thread类的join（）阻塞当前线程以等待子线程处理完毕"></a>5.2使用Thread类的join（）阻塞当前线程以等待子线程处理完毕</h4><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/join方法.png" target="_blank" rel="noopener"><img src="http://39.107.124.120/wp-content/uploads/2020/03/join%E6%96%B9%E6%B3%95-300x37.png" alt="join(http://39.107.124.120/wp-content/uploads/2020/03/join方法-300x37.png)方法"></a></p>
 <ul>
@@ -36,14 +35,14 @@
 <li>缺点：不够细，类似线程中调用其他线程的逻辑关系无法实现</li>
 </ul>
 <h4 id="5-3通过Callable接口实现"><a href="#5-3通过Callable接口实现" class="headerlink" title="5.3通过Callable接口实现"></a>5.3通过Callable接口实现</h4><p>实现Callable接口：实现call（）</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/MyCallable.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/7a0d15cf61794c899edd034c41ee2a28.png" alt="MyCallable"></a></p>
-<h5 id="5-3-1通过FutureTask-Callable-实现"><a href="#5-3-1通过FutureTask-Callable-实现" class="headerlink" title="5.3.1通过FutureTask(Callable)实现"></a>5.3.1通过FutureTask<v>(Callable)实现</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/FutureTask.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/6c4deb9a86567df9005ca9235d810e37.png" alt="FutureTask"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/7a0d15cf61794c899edd034c41ee2a28.png" alt="MyCallable"></p>
+<h5 id="5-3-1通过FutureTask-Callable-实现"><a href="#5-3-1通过FutureTask-Callable-实现" class="headerlink" title="5.3.1通过FutureTask(Callable)实现"></a>5.3.1通过FutureTask<v>(Callable)实现</h5><p>[<img src="https://pic.rmb.bdstatic.com/bjh/6c4deb9a86567df9005ca9235d810e37.png" alt="FutureTask"></p>
 <p>FutureTask<v>中方法：</p>
 <ul>
 <li>isDone() : FutureTask中Callable的call方法是否执行完</li>
 <li>get() : 返回call（）方法执行完后的返回参数</li>
 </ul>
-<h5 id="5-3-2通过线程池来实现"><a href="#5-3-2通过线程池来实现" class="headerlink" title="5.3.2通过线程池来实现"></a>5.3.2通过线程池来实现</h5><p><a href="http://39.107.124.120/wp-content/uploads/2020/03/线程池实现线程处理.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/83ad2a4a43112a30cbf9366999247416.png" alt="线程池实现线程处理"></a></p>
+<h5 id="5-3-2通过线程池来实现"><a href="#5-3-2通过线程池来实现" class="headerlink" title="5.3.2通过线程池来实现"></a>5.3.2通过线程池来实现</h5><p>[<img src="https://pic.rmb.bdstatic.com/bjh/83ad2a4a43112a30cbf9366999247416.png" alt="线程池实现线程处理"></p>
 <ul>
 <li>创建线程池：ExecutorService newCachedThreadPool = Executors.newCachedThreadPool();</li>
 <li>定义Future对象：Future<String> future = newCachedThreadPool.submit(new MyCallable());</li>
@@ -72,7 +71,7 @@
 <p>5.<strong>Blocked</strong>（阻塞）：等待获取排它锁</p>
 <p>6.<strong>Terminated</strong>（结束）：已终止线程的状态，线程已经结束执行</p>
 <p><strong>线程状态之间的转换：</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/线程状态的转换.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/b3879dbd292f3c39a1a1d6b6ebdb3d46.png" alt="线程状态的转换"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/b3879dbd292f3c39a1a1d6b6ebdb3d46.png" alt="线程状态的转换"></p>
 <h3 id="7-sleep和wait的区别"><a href="#7-sleep和wait的区别" class="headerlink" title="7.sleep和wait的区别"></a>7.sleep和wait的区别</h3><p><strong>基本差别：</strong></p>
 <ul>
 <li>sleep是Thread类的方法，wait是Object类中定义的方法</li>

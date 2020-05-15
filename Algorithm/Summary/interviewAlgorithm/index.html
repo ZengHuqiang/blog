@@ -2,11 +2,11 @@
 </head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">面试高频算法题</h1><div class="post-info">May 13, 2020<a class="tag-title" href="/tags/Algorithm/">#Algorithm</a></div><div class="post-content"><h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><h3 id="1-二分查找"><a href="#1-二分查找" class="headerlink" title="1.二分查找"></a>1.二分查找</h3><ul>
 <li>用数组【start，end】中间的数与target比较，通过比较结果，二分的缩小下一次的比较范围</li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/二分查找.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/793c33b9fdaf19d4c4f9fe022c520371.png" alt="二分查找"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/793c33b9fdaf19d4c4f9fe022c520371.png" alt="二分查找"></p>
 <h3 id="2-数组：将数组中0放后面，其他顺序不变"><a href="#2-数组：将数组中0放后面，其他顺序不变" class="headerlink" title="2.数组：将数组中0放后面，其他顺序不变"></a>2.数组：将数组中0放后面，其他顺序不变</h3><ul>
 <li>思路：<a href="https://blog.csdn.net/weixin_42600072/article/details/88391582" target="_blank" rel="noopener">双指针策略</a>，定义一个指针指向新数组的有效信息末尾，遍历数组，将有效信息（除0外）按序排列到数组前面，最后再数组后面补0</li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/MoveZeros.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/2c869117b58e42f61bd4c564ba0a6ce5.png" alt="MoveZeros"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/2c869117b58e42f61bd4c564ba0a6ce5.png" alt="MoveZeros"></p>
 <h3 id="3-数组：有序数组去重"><a href="#3-数组：有序数组去重" class="headerlink" title="3.数组：有序数组去重"></a>3.数组：有序数组去重</h3><ul>
 <li><strong>双指针策略，定义一个慢指针slow，一个快指针fast</strong></li>
 <li>如果num[slow] ==num[fast] ，将快指针向后移</li>
@@ -14,12 +14,12 @@
 <li>直到快指针走到数组末尾，此时的慢指针即指向去重后的有序数组末尾</li>
 <li><a href="https://www.cnblogs.com/zhanghongfeng/p/11771758.html" target="_blank" rel="noopener">参考</a></li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/removeDuplicates.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/3ba51664daaf41d107b1fb3d7d086345.png" alt="removeDuplicates"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/3ba51664daaf41d107b1fb3d7d086345.png" alt="removeDuplicates"></p>
 <h3 id="4-对仅有0，1，2的数组排序"><a href="#4-对仅有0，1，2的数组排序" class="headerlink" title="4.对仅有0，1，2的数组排序"></a>4.对仅有0，1，2的数组排序</h3><ul>
 <li>双指针策略，定义一个指针zero，从前指向最后一个0元素的序号，定义一个指针two，从后指向最后一个2元素的序号</li>
 <li>遍历数组，如果是1，则返回跳过往后判断，如果是0，则与num【zero+1】交换位置并zero++，如果是2，则与num【two-1】交换位置并two–</li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/对0、1、2排序.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/b9ef8ab0bc1d8ee84f01f82ec213b010.png" alt="对0、1、2排序"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/b9ef8ab0bc1d8ee84f01f82ec213b010.png" alt="对0、1、2排序"></p>
 <h3 id="5-数组中第K大元素——堆排序（未完成）"><a href="#5-数组中第K大元素——堆排序（未完成）" class="headerlink" title="5.数组中第K大元素——堆排序（未完成）"></a>5.数组中第K大元素——堆排序（未完成）</h3><ol>
 <li>思路一：维护K最小堆，剩下元素与顶堆比较，若大于则删除顶堆元素后插入，最后剩下的顶堆元素就是要找的元素</li>
 <li>思路二：快速排序方法</li>
@@ -36,21 +36,21 @@
 <li>遍历第二遍，将第一个缺失的正整数找出来</li>
 </ul>
 <p><strong>代码：</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/第一个缺失的正整数.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/e1bd9f15cf363440aafd12b2e20bee52.png" alt="第一个缺失的正整数"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/e1bd9f15cf363440aafd12b2e20bee52.png" alt="第一个缺失的正整数"></p>
 <h3 id="8-三数之和为0"><a href="#8-三数之和为0" class="headerlink" title="8.三数之和为0"></a>8.三数之和为0</h3><p><strong>思路：</strong></p>
 <p>固定一个数，将问题转化为在数组中找两数之和等于target，使用HashMap</p>
 <p><strong>代码(未解决重复元素的情况)：</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/三数之和为0.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/62141c76ba407151ee4b8cf9d9c2e363.png" alt="三数之和为0"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/62141c76ba407151ee4b8cf9d9c2e363.png" alt="三数之和为0"></p>
 <p><strong>代码（解决去重和重复元素</strong>）：</p>
 <ul>
 <li>重复元素：由exist判断进行自动规避</li>
 <li>去重：对结果元素进行排序<strong>list.sort(Comparator.naturalOrder())</strong></li>
 </ul>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/三数之和（去重-处理重复元素）.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/309aa4f700c89f48f73c2179a488de23.png" alt="三数之和（去重+处理重复元素）"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/309aa4f700c89f48f73c2179a488de23.png" alt="三数之和（去重+处理重复元素）"></p>
 <h3 id="9-循环有序数组二分查找"><a href="#9-循环有序数组二分查找" class="headerlink" title="9.循环有序数组二分查找"></a>9.循环有序数组二分查找</h3><p><strong>思路：</strong></p>
 <p>相比于传统的二分查找，再判断target在mid左边还是右边时，加一个判断target和mid是否同时大于（当mid&gt;target时）或者小于（当mid&lt;target时）left</p>
 <p><strong>代码：</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/循环有序数组的二分查找.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/d6a018a68878916d3f6ae56982ceca2c.png" alt="循环有序数组的二分查找"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/d6a018a68878916d3f6ae56982ceca2c.png" alt="循环有序数组的二分查找"></p>
 <h3 id="10-根据字符出现次数排序"><a href="#10-根据字符出现次数排序" class="headerlink" title="10.根据字符出现次数排序"></a><strong>10.根据字符</strong>出现次数排序</h3><p><strong>思路：</strong></p>
 <ul>
 <li>使用HashMap将字符串中各个字符的出现次数</li>
@@ -58,14 +58,14 @@
 <li>使用StringBuilder sb = new StringBuilder()进行字符串的拼接</li>
 </ul>
 <p><strong>代码：</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/根据字符出现次数排序.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/c4ec845faf6193d59e0dba07e21d8cf2.png" alt="根据字符出现次数排序"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/c4ec845faf6193d59e0dba07e21d8cf2.png" alt="根据字符出现次数排序"></p>
 <h3 id="11-子数组之和等于所给数的个数"><a href="#11-子数组之和等于所给数的个数" class="headerlink" title="11.子数组之和等于所给数的个数"></a>11.子数组之和等于所给数的个数</h3><p>数组为已排序数组，求有多少个这样的数组</p>
 <p><strong>思路一：双指针思想，定义一个数组的起始指针start和end指针，如果数组总和大于target，start前移；如果小于，end后移；如果相等，则正确组数加1后，start和end均后移</strong></p>
 <p><strong>思路二：创建数组sum[]，其中sum[n]表示数组前n个数之和，再二次遍历sum，计算sum[m]-sum[n]：表示n到m数字的和，与k进行比较（复杂，不推荐）</strong></p>
 <p>变体：给定一个包含非负数的数组和一个目标整数 k，编写一个函数来判断该数组是否含有连续的子数组，其大小至少为 2，总和为 k 的倍数，即总和为 n*k，其中 n 也是一个整数。</p>
 <p><strong>思路一：思路一不行，可以延续思路二</strong></p>
 <p><strong>思路二：使用HashMap+前缀+取模，存放sum%k的值，如果map中已经存在了sum%k这个value，判断数组中元素是否大于1，大于则存在</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/连续子数组之和.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/e1c40b7bdf8bd78865f9007ec7536144.png" alt="连续子数组之和"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/e1c40b7bdf8bd78865f9007ec7536144.png" alt="连续子数组之和"></p>
 <h3 id="12-最大子序列之和"><a href="#12-最大子序列之和" class="headerlink" title="12.最大子序列之和"></a><strong>12.最大子序列之和</strong></h3><p><strong>思路：计算前n个数的和，若为负数则抛弃，若为正数，则与max进行比较，max为前面最大子序列之和</strong></p>
 <h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><h3 id="13-根据x值划分链表"><a href="#13-根据x值划分链表" class="headerlink" title="13.根据x值划分链表"></a>13.根据x值划分链表</h3><p>-给定一个链表和一个值x,将链表划分成两 部分,使得划分后小于x的结点在前,大于 等于x的结点在后。在这两部分中要保持原 链表中的出现顺序。</p>
 <p><strong>思路一：遍历的时候新建立两个链表，最后合并，需要建立4个新指针（左右各两个指向头尾），另外需要判断头结点为空的情况</strong>（<a href="https://www.jianshu.com/p/d37786e9d83e" target="_blank" rel="noopener">参考博客</a>）</p>
@@ -81,7 +81,7 @@
 <h3 id="18-判断链表是否为回文"><a href="#18-判断链表是否为回文" class="headerlink" title="18.判断链表是否为回文"></a>18.判断链表是否为回文</h3><p><strong>思路一：用数组存储链表的数据，然后通过数组进行判断（不满足空间复杂度）</strong></p>
 <p><strong>思路二：全部反转链表后，与原链表进行比较</strong></p>
 <p><strong>思路三：通过快慢指针找到中间结点，然后翻转后面一半的链表后，从head和中间结点以后比较</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/快慢指针找中间结点.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/05b6fa761d3e74a90fc09327fb39fd63.png" alt="快慢指针找中间结点"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/05b6fa761d3e74a90fc09327fb39fd63.png" alt="快慢指针找中间结点"></p>
 <h3 id="19-找到两条单向链表的交点"><a href="#19-找到两条单向链表的交点" class="headerlink" title="19.找到两条单向链表的交点"></a>19.找到两条单向链表的交点</h3><p><strong>思路一：Hash法，将第一个链表结点地址存入hash表中，然后遍历第二条链表查看是否有相同的结点</strong></p>
 <p><strong>思路二：回环法，遍历第一个链表到链尾，然后将其指向第二个链表头部，如果形成了回环则表示两个链表相交</strong></p>
 <p><strong>思路三：尾结点判断法，遍历两个链表到尾部，如果相等则代表相交</strong></p>
@@ -90,47 +90,47 @@
 <p><strong>判断是否有环：快慢指针、hash表存放</strong></p>
 <p><strong>判断环点：hash表存放</strong></p>
 <h2 id="栈和队列"><a href="#栈和队列" class="headerlink" title="栈和队列"></a>栈和队列</h2><h3 id="21-给定n，求最少需要几个完全平方数组成"><a href="#21-给定n，求最少需要几个完全平方数组成" class="headerlink" title="21.给定n，求最少需要几个完全平方数组成"></a>21.给定n，求最少需要几个完全平方数组成</h3><p><strong>思路一：（推荐）动态规划，一个数最少等于前面所有可能数最少加上一个完全平方数。创建一个一维数组来存储中间（<a href="https://blog.csdn.net/u013309870/article/details/75193592" target="_blank" rel="noopener">动态规划算法博客</a>）</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/动态规划找完全平方.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/09367e1840a2fd0bea2cbd6da7dbc62e.png" alt="动态规划找完全平方"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/09367e1840a2fd0bea2cbd6da7dbc62e.png" alt="动态规划找完全平方"></p>
 <p><strong>思路二：贪心枚举，维护一个完全平方数表（HashSet），我们定义一个is_divided（int n,int count）函数来确定n是否可以被分解count次后满足条件，我们只需要返回true or false 而不需要知道确切是那些组合。之后我们从count=1开始枚举，直到找到最小的count</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/贪心枚举找完全平方.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/97a1554e71a47ee316d902a7c3452263.png" alt="贪心枚举找完全平方"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/other/97a1554e71a47ee316d902a7c3452263.png" alt="贪心枚举找完全平方"></p>
 <h3 id="22-给定数组，求前k个频率最高的数"><a href="#22-给定数组，求前k个频率最高的数" class="headerlink" title="22.给定数组，求前k个频率最高的数"></a>22.给定数组，求前k个频率最高的数</h3><p><strong>思路一：使用HashMap存放数字以及其频率，然后根据Value进行排序，使用java的Collections.sort()对Map.Entry进行排序**</strong>，具体实现参考第10题**</p>
 <p><strong>思路二：（<a href="https://leetcode-cn.com/problems/top-k-frequent-elements/solution/leetcode-di-347-hao-wen-ti-qian-k-ge-gao-pin-yuan-/" target="_blank" rel="noopener">参考</a>）改进，在排序上可以对HashMap进行堆排序，维护k个最小优先队列</strong></p>
 <p><a href="https://www.cnblogs.com/gnivor/p/4841191.html" target="_blank" rel="noopener">优先队列的使用</a></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/求前K个频率最高的数_优先队列.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/2c2e37693d70e4b943e375e59f5a9b1c.png" alt="求前K个频率最高的数_优先队列"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/2c2e37693d70e4b943e375e59f5a9b1c.png" alt="求前K个频率最高的数_优先队列"></p>
 <h3 id="23-合并K个已排序链表"><a href="#23-合并K个已排序链表" class="headerlink" title="23.合并K个已排序链表"></a>23.合并K个已排序链表</h3><p><strong>思路一：优先队列，对每次的首节点进行排序，维护一个优先队列，注意每次指针的向后移动，确保堆中维护的是当前位置的首节点</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/合并k个已排序链表_优先队列.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/320304c0a26f1147c0ceb6b7acbe6f4c.png" alt="合并k个已排序链表_优先队列"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/320304c0a26f1147c0ceb6b7acbe6f4c.png" alt="合并k个已排序链表_优先队列"></p>
 <h3 id="24-O-1-时间实现栈内max"><a href="#24-O-1-时间实现栈内max" class="headerlink" title="24.O(1)时间实现栈内max"></a>24.O(1)时间实现栈内max</h3><p><strong>思路一：创建一个maxStack辅助栈，每次入栈时判断x与顶部元素大小，若x大于栈顶，则进入辅助栈，否则将栈顶元素再次加入maxStack中；出栈时同时出。</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/max栈的创建.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/09e20c0ac904c72a3396fd62c57abe82.png" alt="max栈的创建"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/09e20c0ac904c72a3396fd62c57abe82.png" alt="max栈的创建"></p>
 <h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><h3 id="25-二叉树的最大-最小深度"><a href="#25-二叉树的最大-最小深度" class="headerlink" title="25.二叉树的最大/最小深度"></a>25.二叉树的最大/最小深度</h3><ul>
 <li>最小深度是从根节点到最近叶子节点的最短路径上的节点数量。</li>
 </ul>
 <p><strong>思路一：递归</strong></p>
 <p>最小深度：</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/二叉树最小深度.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/d7a9fb81459a9b722058afea438979fd.png" alt="二叉树最小深度"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/d7a9fb81459a9b722058afea438979fd.png" alt="二叉树最小深度"></p>
 <p>最大深度不用考虑根节点的有一个子树为空的情况。</p>
 <h3 id="26-二叉树翻转左右孩子"><a href="#26-二叉树翻转左右孩子" class="headerlink" title="26.二叉树翻转左右孩子"></a>26.二叉树翻转左右孩子</h3><p><strong>思路一：递归，先翻转左右两个子树，然后让子树进行翻转</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/左右翻转二叉树.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/6a27dcd4b6f864c711a6b4f521cb1c3c.png" alt="左右翻转二叉树"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/6a27dcd4b6f864c711a6b4f521cb1c3c.png" alt="左右翻转二叉树"></p>
 <h3 id="27-求完全二叉树的节点个数"><a href="#27-求完全二叉树的节点个数" class="headerlink" title="27.求完全二叉树的节点个数"></a>27.求完全二叉树的节点个数</h3><p><strong>思路一：递归，用求二叉树的方式求完全二叉树的节点数，没有用到二叉树的特性</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/二叉树的节点数.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/4eea51be13e7f06ca2b45485cec42729.png" alt="二叉树的节点数"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/4eea51be13e7f06ca2b45485cec42729.png" alt="二叉树的节点数"></p>
 <p><strong>思路二：完全二叉树的节点数=底部+除底部以外的完全满二叉树</strong>，计算底部时：使用helper()函数计算最后一层节点的数量，传入的depth是下面最多还有的深度，所以depth == 0也就是深度遍历终止的地方，此处有节点返回1，无节点返回0。<br>关键的剪枝操作：当左子树的最后一层的节点没有充满时，直接返回左子树中的最后一层的节点数（右子树最后一层一定没有节点）。（<a href="https://leetcode-cn.com/problems/count-complete-tree-nodes/solution/ji-bai-100zhong-de-fang-fa-zhong-zui-hao-li-jie-de/" target="_blank" rel="noopener">参考</a>）</p>
 <h3 id="28-根节点到叶子结点和为sum的路径"><a href="#28-根节点到叶子结点和为sum的路径" class="headerlink" title="28.根节点到叶子结点和为sum的路径"></a>28.根节点到叶子结点和为sum的路径</h3><p><strong>思路一：递归，如果当前节点和不为sum，通过sum=sum-root.val向下遍历子节点。回溯，定义一个LinkedList的path存放路径。</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/路径和为sum的路径.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/ac711b0d9c10b30a9de9ed850971e62c.png" alt="路径和为sum的路径"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/ac711b0d9c10b30a9de9ed850971e62c.png" alt="路径和为sum的路径"></p>
 <h3 id="29-路径和为sum的总条数"><a href="#29-路径和为sum的总条数" class="headerlink" title="29.路径和为sum的总条数"></a>29.路径和为sum的总条数</h3><p><strong>思路一：可以去掉对叶子节点的判断</strong></p>
 <h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="30-判断BST"><a href="#30-判断BST" class="headerlink" title="30.判断BST"></a>30.判断BST</h3><p>思路一：如果只是判断左子树&lt;根&lt;右子树是不够的，还需要判断左边子树所有的节点小于根，以及右边的所有节点大于根，<strong>所以需要有一个上届和下届</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/判断BST.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/8e3f72d0ce1890e72879982bdf5cb1c2.png" alt="判断BST"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/other/8e3f72d0ce1890e72879982bdf5cb1c2.png" alt="判断BST"></p>
 <p><strong>思路二：中序遍历</strong></p>
 <h3 id="31-有序数组转二叉平衡搜索树"><a href="#31-有序数组转二叉平衡搜索树" class="headerlink" title="31.有序数组转二叉平衡搜索树"></a>31.有序数组转二叉平衡搜索树</h3><p>思路一：二分法</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/有序数组转二叉平衡树.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/92c1aa0bc855fbf91911a93a1bf5a5a0.png" alt="有序数组转二叉平衡树"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/92c1aa0bc855fbf91911a93a1bf5a5a0.png" alt="有序数组转二叉平衡树"></p>
 <h3 id="32-普通二叉树中两个节点的最小公共祖先"><a href="#32-普通二叉树中两个节点的最小公共祖先" class="headerlink" title="32.普通二叉树中两个节点的最小公共祖先"></a>32.普通二叉树中两个节点的最小公共祖先</h3><p>思路一：递归，定义mid判断根节点是否有目标结点，left判断左子树是否有目标结点，right判断右子树是否有目标结点。如果<strong>mid+left+right=2则表示当前节点就是公共最小祖先</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/公共最小祖先结点.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/1d11f23b84305fd7cd0b8a800e7247cb.png" alt="公共最小祖先结点"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/1d11f23b84305fd7cd0b8a800e7247cb.png" alt="公共最小祖先结点"></p>
 <h3 id="33-求树的左叶子节点之和"><a href="#33-求树的左叶子节点之和" class="headerlink" title="33.求树的左叶子节点之和"></a>33.求树的左叶子节点之和</h3><p>思路：递归遍历，无论是前序、中序、还是后序，关键是如何判断一个结点是左叶子结点</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/左子树之和.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/624a75d5ef4e86748db3f5a87b9c25c8.png" alt="左子树之和"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/624a75d5ef4e86748db3f5a87b9c25c8.png" alt="左子树之和"></p>
 <h3 id="34-非递归遍历"><a href="#34-非递归遍历" class="headerlink" title="34.非递归遍历"></a>34.非递归遍历</h3><p><strong>前序遍历：</strong></p>
 <p>1.先将根节点入栈<br>2.访问根节点<br>3.如果根节点存在右孩子，则将右孩子入栈<br>4.如果根节点存在左孩子，则将左孩子入栈（<strong>注意：一定是右孩子先入栈，然后左孩子入栈</strong>）<br>5.重复2-4</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/二叉树非递归前序遍历.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/f1f0607c09c8dee2066575aa5bd41f43.png" alt="二叉树非递归前序遍历"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/f1f0607c09c8dee2066575aa5bd41f43.png" alt="二叉树非递归前序遍历"></p>
 <p><strong>中序遍历：</strong></p>
 <p>1.先将根节点入栈<br>2.将当前节点的所有左孩子入栈，直到左孩子为空<br>3.访问栈顶元素，如果栈顶元素存在右孩子，则继续第2步<br>4.重复第2、3步，直到栈为空并且所有的节点都被访问</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/二叉树非递归中序遍历.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/fbd0e8f47e2c1ad73085390b635ea0ce.png" alt="二叉树非递归中序遍历"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/fbd0e8f47e2c1ad73085390b635ea0ce.png" alt="二叉树非递归中序遍历"></p>
 <p><strong>后序遍历：</strong></p>
 <ol>
 <li>根节点入栈，并定一个pre指针指向上一次访问的结点，初始为null</li>
@@ -138,13 +138,13 @@
 <li>如果栈顶元素不同时为空，则先判断右子树入栈，只有判断左子树入栈</li>
 <li>循环直至栈为空</li>
 </ol>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/非递归后序遍历.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/14c6145bafead415b55caeba15bf1f92.png" alt="非递归后序遍历"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/14c6145bafead415b55caeba15bf1f92.png" alt="非递归后序遍历"></p>
 <h3 id="35-之字形遍历二叉树"><a href="#35-之字形遍历二叉树" class="headerlink" title="35.之字形遍历二叉树"></a>35.之字形遍历二叉树</h3><p><strong>思路一：广度优先，两个双端队列（可以直接用LinkedList来实现），定义一个变量判断，该层是从左到右还是从右到左遍历，在队列中插入null结点来分隔每层的遍历情况。</strong></p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/之字形遍历二叉树.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/63c23493e755faca7ccc2f27d9f522ed.png" alt="之字形遍历二叉树"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/63c23493e755faca7ccc2f27d9f522ed.png" alt="之字形遍历二叉树"></p>
 <h2 id="递归回溯"><a href="#递归回溯" class="headerlink" title="递归回溯"></a>递归回溯</h2><h3 id="36-求组合数"><a href="#36-求组合数" class="headerlink" title="36.求组合数"></a>36.求组合数</h3><p>思路一：递归回溯，通过判断path中元素是否足够来结束递归</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/求组合数.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/396424e90da19390359ce46e6709314e.png" alt="求组合数"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/396424e90da19390359ce46e6709314e.png" alt="求组合数"></p>
 <p>思路二：递归，search（n,k）可以分为选择第n个元素即search(n-1,k-1)，和不选择第n个元素即search(n-1,k)两种路径方式，当k=0或者n==k时表示递归走到了终点，结束递归</p>
-<p><a href="http://39.107.124.120/wp-content/uploads/2020/03/求组合数2.png" target="_blank" rel="noopener"><img src="https://pic.rmb.bdstatic.com/bjh/other/e61d4b34c05e0bcb3a4cd10f2e3f7394.png" alt="求组合数2"></a></p>
+<p>[<img src="https://pic.rmb.bdstatic.com/bjh/e61d4b34c05e0bcb3a4cd10f2e3f7394.png" alt="求组合数2"></p>
 <p>37.</p>
 </div></article></div></main><footer><div class="paginator"><a class="prev" href="/Algorithm/Summary/algorithmSkill01/">上一篇</a><a class="next" href="/Algorithm/Summary/sortAlgorithm/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
     clientID: '2cdbd7aa1fe9fd30e3c5',     
