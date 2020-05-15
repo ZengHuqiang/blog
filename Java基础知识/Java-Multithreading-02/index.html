@@ -35,13 +35,13 @@
 <li>对齐填充</li>
 </ul>
 <h4 id="1-4-2对象头结构："><a href="#1-4-2对象头结构：" class="headerlink" title="1.4.2对象头结构："></a>1.4.2对象头结构：</h4><p>1.Mark Word：默认存储对象的hashCode，分代年龄，锁类型，锁标志位等信息</p>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/d00ac2da80cab5bb2336801a8d4cb3c0.png" alt="Java对象头MarkWord"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/d00ac2da80cab5bb2336801a8d4cb3c0.png" alt="Java对象头MarkWord"></p>
 <p>2.Class Metadata Address：类型指针指向对象的类元数据，JVM通过这个指针确定该对象是哪个类的数据</p>
 <h4 id="1-4-3Monitor：每个Java对象天生自带了一把看不见的锁（管程、监控器锁）"><a href="#1-4-3Monitor：每个Java对象天生自带了一把看不见的锁（管程、监控器锁）" class="headerlink" title="1.4.3Monitor：每个Java对象天生自带了一把看不见的锁（管程、监控器锁）"></a>1.4.3Monitor：每个Java对象天生自带了一把看不见的锁（管程、监控器锁）</h4><ul>
 <li>Monitor对象存在于每个java对象的对象头中，这也是sychronized可以使用对象作为锁的原因</li>
 <li>字节代码层面：对于同步代码块：<strong>monitorentry</strong>获取该对象的monitor锁，<strong>monitorexit</strong>释放该对象的monitor锁；对于同步方法：ACC_SYNCHRONIZED进行隐式的控制</li>
 </ul>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/85f146bc9de476f8fc5fcee2f71579b6.jpeg" alt="ObjectMonitor"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/85f146bc9de476f8fc5fcee2f71579b6.jpeg" alt="ObjectMonitor"></p>
 <ul>
 <li>WaitSet：表示等待池中的对象集</li>
 <li>EntryList：表示锁池的对象集</li>
@@ -72,12 +72,12 @@
 <h5 id="1-4-5-2锁消除"><a href="#1-4-5-2锁消除" class="headerlink" title="1.4.5.2锁消除"></a>1.4.5.2锁消除</h5><ul>
 <li>在JIT编译时，对运行上下文进行扫描，去除不可能存在竞争的锁</li>
 </ul>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/a627333f743f327940959ea7f6705246.png" alt="锁消除"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/a627333f743f327940959ea7f6705246.png" alt="锁消除"></p>
 <p>由于StringBuffer是线程安全的，即sb是不可共享资源；而append方法是同步方法，JVM编译时会消除掉append的对象锁，提升效率</p>
 <h5 id="1-4-5-3锁粗化"><a href="#1-4-5-3锁粗化" class="headerlink" title="1.4.5.3锁粗化"></a>1.4.5.3锁粗化</h5><ul>
 <li>通过扩大加锁的范围，避免反复加锁和解锁</li>
 </ul>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/3852f8a38a2310ef00c55b39b9965fdb.png" alt="锁粗化"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/3852f8a38a2310ef00c55b39b9965fdb.png" alt="锁粗化"></p>
 <p>调用100次append的同步对象锁，为了提升效率，在加锁时JVM直接扩大为这100次循环之前</p>
 <h4 id="1-4-6sychronized的四种状态"><a href="#1-4-6sychronized的四种状态" class="headerlink" title="1.4.6sychronized的四种状态"></a>1.4.6sychronized的四种状态</h4><ul>
 <li><strong>无锁–&gt;偏向锁–&gt;轻量级锁–&gt;重量级锁</strong></li>
@@ -93,7 +93,7 @@
 <li>若存在同一时间访问同一锁的情况，就会导致轻量级锁膨胀为重量级锁</li>
 </ul>
 <p><a href="https://blog.csdn.net/u013568373/article/details/94486829" target="_blank" rel="noopener">详情参考博客</a></p>
-<h5 id="1-4-6-3总结"><a href="#1-4-6-3总结" class="headerlink" title="1.4.6.3总结"></a>1.4.6.3总结</h5><p>[<img src="https://pic.rmb.bdstatic.com/bjh/705beb320a092fa174e7ca3815631911.jpeg" alt="锁的总结"></p>
+<h5 id="1-4-6-3总结"><a href="#1-4-6-3总结" class="headerlink" title="1.4.6.3总结"></a>1.4.6.3总结</h5><p><img src="https://pic.rmb.bdstatic.com/bjh/705beb320a092fa174e7ca3815631911.jpeg" alt="锁的总结"></p>
 <h2 id="2-Sychronized与Reentrantlock的区别"><a href="#2-Sychronized与Reentrantlock的区别" class="headerlink" title="2.Sychronized与Reentrantlock的区别"></a>2.Sychronized与Reentrantlock的区别</h2><h3 id="2-1ReentrantLock（再入锁）简介"><a href="#2-1ReentrantLock（再入锁）简介" class="headerlink" title="2.1ReentrantLock（再入锁）简介"></a>2.1ReentrantLock（再入锁）简介</h3><ul>
 <li>位于java.util.concurrent.locks包</li>
 <li>和CountDownLatch、FutureTask、Semaphore一样基于AQS实现</li>

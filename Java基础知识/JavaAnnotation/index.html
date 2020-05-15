@@ -25,14 +25,14 @@
 <h5 id="3-1-1-Target"><a href="#3-1-1-Target" class="headerlink" title="3.1.1.@Target"></a>3.1.1.@Target</h5><p><strong>描述所修饰的注解的使用范围</strong></p>
 <p>使用：</p>
 <p><strong>ElementType</strong></p>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/89af4f95075d5f8f37bab7d3502392b2.png" alt="@Target注解的作用范围"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/89af4f95075d5f8f37bab7d3502392b2.png" alt="@Target注解的作用范围"></p>
 <ul>
 <li>packages、types（类、接口、枚举、Annotation类型）</li>
 <li>类型成员（方法、构造函数、成员变量、枚举值）</li>
 <li>方法参数和本地变量（如循环变量、catch参数）</li>
 </ul>
 <h5 id="3-1-2-Retention"><a href="#3-1-2-Retention" class="headerlink" title="3.1.2@Retention"></a>3.1.2@Retention</h5><p><strong>标记注解被保留时间的长短（生命周期）</strong></p>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/0569c6ee974b5509b0920efae6f40178.png" alt="@Retention的使用"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/0569c6ee974b5509b0920efae6f40178.png" alt="@Retention的使用"></p>
 <ul>
 <li>SOURCE：只出现在源代码中，编译后的class文件中不出现</li>
 <li>CLASS：可以出现在编译后的class文件中</li>
@@ -46,7 +46,7 @@
 <li>自动继承java.lang.annotation.Annotation</li>
 <li>使用<strong>public</strong> <strong>@interface</strong>标识修饰</li>
 </ul>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/aeb50553dd33e2211c5959e1d8269955.jpeg" alt="自定义注解的格式"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/aeb50553dd33e2211c5959e1d8269955.jpeg" alt="自定义注解的格式"></p>
 <h5 id="3-2-1注解属性支持的类型"><a href="#3-2-1注解属性支持的类型" class="headerlink" title="3.2.1注解属性支持的类型"></a>3.2.1注解属性支持的类型</h5><ul>
 <li>所有基本数据类型</li>
 <li>String类型</li>
@@ -60,20 +60,20 @@
 <li>一种类似方法的定义方式，修饰符只能为<strong>default或者public</strong></li>
 <li>如果有默认值，则<strong>使用default添加默认值</strong></li>
 </ul>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/ca2a26282186aa21ce59a15b22732f79.png" alt="自定义注解的使用01">)<img src="https://pic.rmb.bdstatic.com/bjh/47dad0e275d116889c302e44137d65fd.png" alt="自定义注解的使用02"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/ca2a26282186aa21ce59a15b22732f79.png" alt="自定义注解的使用01">)<img src="https://pic.rmb.bdstatic.com/bjh/47dad0e275d116889c302e44137d65fd.png" alt="自定义注解的使用02"></p>
 <p><strong>使用：</strong></p>
 <ul>
 <li>根据注解的使用范围@Target可以在合适位置使用注解，<strong>默认属性名可以不赋值，其余均需赋值</strong></li>
 </ul>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/656e68642e5268e09ddf075d5a5f81c3.png" alt="自定义注解的使用05"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/656e68642e5268e09ddf075d5a5f81c3.png" alt="自定义注解的使用05"></p>
 <p><strong>获取注解：</strong></p>
 <ul>
 <li><strong>获取的注解生命周期必须为@Rentation：RUNTIME</strong></li>
 <li>获取类的注解：通过反射获取类实例–&gt;调用getAnnotations（）方法获取所有的注解实例</li>
 <li>获取成员变量/方法的注解：通过反射获取类实例–&gt;getFields获取方法实例–&gt;判断成员变量中isAnnotationParent（注解.class）是否存在该注解–&gt;调用getAnnotation（）获取注解</li>
 </ul>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/b7ad38902c67344cf825c1865e00faa6.png" alt="自定义注解的使用03"></p>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/5f8f2059ddc8d4d91199f30dc51fce44.png" alt="自定义注解的使用04"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/b7ad38902c67344cf825c1865e00faa6.png" alt="自定义注解的使用03"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/5f8f2059ddc8d4d91199f30dc51fce44.png" alt="自定义注解的使用04"></p>
 <h3 id="4-注解的底层实现"><a href="#4-注解的底层实现" class="headerlink" title="4.注解的底层实现"></a>4.注解的底层实现</h3><p><strong>JVM会为注解生成代理对象</strong></p>
 <p>注解的工作原理：</p>
 <ul>

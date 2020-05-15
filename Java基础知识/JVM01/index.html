@@ -10,12 +10,12 @@
 <h3 id="2-java如何实现平台无关性"><a href="#2-java如何实现平台无关性" class="headerlink" title="2.java如何实现平台无关性"></a>2.java如何实现平台无关性</h3><ul>
 <li><strong>java的编译过程</strong></li>
 </ul>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/4f9786d8230886631faf4c083dd52d55.png" alt="Java编译过程"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/4f9786d8230886631faf4c083dd52d55.png" alt="Java编译过程"></p>
 <p>Java源码首先呗编译为字节码，再有不同平台的<strong>JVM进行解析</strong>，Java语言在不同的平台上运行时，不需要进行重新编译，Java虚拟机在执行字节码的时候，把<strong>字节码转换成具体平台上的机器指令</strong></p>
 <ul>
 <li><strong>Java字节码</strong></li>
 </ul>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/ae2f19b9049a3ba5d7c7d67fb16ab1b2.png" alt="Java字节码"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/ae2f19b9049a3ba5d7c7d67fb16ab1b2.png" alt="Java字节码"></p>
 <ol>
 <li>查看字节码：先编译（javac）、然后javap -c 查看字节码</li>
 </ol>
@@ -26,7 +26,7 @@
 <li>如果直接转换成机器码，每次在解析源码的时候都要对源码进行编译检查（<strong>引入中间字节码，可以多次执行程序，而不需要校验</strong>）</li>
 <li>兼容性：也可以将别的语言（比如Ruby）解析成字节码</li>
 </ol>
-<h3 id="3-JVM如何加载-class文件"><a href="#3-JVM如何加载-class文件" class="headerlink" title="3.JVM如何加载.class文件"></a>3.JVM如何加载.class文件</h3><h4 id="3-1JVM架构"><a href="#3-1JVM架构" class="headerlink" title="3.1JVM架构"></a>3.1JVM架构</h4><p>[<img src="https://pic.rmb.bdstatic.com/bjh/80b88a69f2fbf420805095eca1140b7f.png" alt="JVM结构"></p>
+<h3 id="3-JVM如何加载-class文件"><a href="#3-JVM如何加载-class文件" class="headerlink" title="3.JVM如何加载.class文件"></a>3.JVM如何加载.class文件</h3><h4 id="3-1JVM架构"><a href="#3-1JVM架构" class="headerlink" title="3.1JVM架构"></a>3.1JVM架构</h4><p><img src="https://pic.rmb.bdstatic.com/bjh/80b88a69f2fbf420805095eca1140b7f.png" alt="JVM结构"></p>
 <ul>
 <li>Class Loader：依据特定格式，<strong>加载class文件</strong>到内存</li>
 <li>Execution Engine：对<strong>命令</strong>进行<strong>解析</strong></li>
@@ -36,7 +36,7 @@
 <h3 id="4-反射"><a href="#4-反射" class="headerlink" title="4.反射"></a>4.反射</h3><p>定义：JAVA反射机制实在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种<strong>动态获取信息以及动态调用对象方法</strong>的功能称为java语言的反射机制</p>
 <p>理解：反射就是将Java类中各个成分，映射成一个个的java对象</p>
 <p><strong>写一个反射的例子：</strong></p>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/90f82fe5362174d85d73cce23c75cd06.png" alt="反射的例子"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/90f82fe5362174d85d73cce23c75cd06.png" alt="反射的例子"></p>
 <p><strong>常用方法：</strong></p>
 <ul>
 <li><strong>Class.forName(类的路径)</strong>：创建一个类对象</li>
@@ -64,8 +64,8 @@
 <p>1.<strong>findClass</strong>（String name）：用于寻找类文件，将类文件从二进制字节码转换为Class对象</p>
 <p>2.<strong>defineClass</strong>（byte[]，int off，int len）：传入class文件的二进制字节码，返回类对象</p>
 <p>3<strong>.loadClass</strong>（String name）：加载类文件，它会调用我们实现的findClass方法</p>
-<p>[<img src="https://pic.rmb.bdstatic.com/bjh/bc6b9abb863af1cbe251946a06db3025.png" alt="自定义ClassLoader">)[<img src="https://pic.rmb.bdstatic.com/bjh/d4742eaee2bf3c931cf6a4e15e1191d2.png" alt="自定义ClassLoader02"></p>
-<h4 id="5-4ClassLoader的双亲委派机制"><a href="#5-4ClassLoader的双亲委派机制" class="headerlink" title="5.4ClassLoader的双亲委派机制"></a>5.4ClassLoader的双亲委派机制</h4><p>[<img src="https://pic.rmb.bdstatic.com/bjh/b94a6f99c0feb05951ec6d40bfdf91be.png" alt="类加载器的双亲委派机制"></p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/bc6b9abb863af1cbe251946a06db3025.png" alt="自定义ClassLoader">)<img src="https://pic.rmb.bdstatic.com/bjh/d4742eaee2bf3c931cf6a4e15e1191d2.png" alt="自定义ClassLoader02"></p>
+<h4 id="5-4ClassLoader的双亲委派机制"><a href="#5-4ClassLoader的双亲委派机制" class="headerlink" title="5.4ClassLoader的双亲委派机制"></a>5.4ClassLoader的双亲委派机制</h4><p><img src="https://pic.rmb.bdstatic.com/bjh/b94a6f99c0feb05951ec6d40bfdf91be.png" alt="类加载器的双亲委派机制"></p>
 <ul>
 <li>第一遍自底而上（从自定义ClassLoader到BootstrpClassLoader）：检查各个加载器是否已经加载了该类</li>
 <li>第二遍自上到底：从各个加载器目录中尝试加载该类</li>
