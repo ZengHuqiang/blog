@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> spring自研框架IoC01创建注解并提取标记对象 · 空空白的博客</title><meta name="description" content="spring自研框架IoC01创建注解并提取标记对象 - kongkongbai"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://www.kongkongbai.comundefined" title="空空白的博客"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="空空白的博客" type="application/atom+xml">
+</head><body><div class="wrap"><header><a class="logo-link" href="/"><img src="/favicon.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a class="nav-list-link" href="/" target="_self">BLOG</a></li><li class="nav-list-item"><a class="nav-list-link" href="/archives/" target="_self">ARCHIVE</a></li><li class="nav-list-item"><a class="nav-list-link" href="/categories/" target="_self">CATEGORY</a></li><li class="nav-list-item"><a class="nav-list-link" href="https://github.com/zenghuqiang" target="_blank">GITHUB</a></li><li class="nav-list-item"><a class="nav-list-link" href="/friends/" target="_self">FRIENDS</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">spring自研框架IoC01创建注解并提取标记对象</h1><div class="post-info">Jun 29, 2020<a class="tag-title" href="/tags/spring%E6%A1%86%E6%9E%B6/">#spring框架</a></div><div class="post-content"><h3 id="0-总结嗷"><a href="#0-总结嗷" class="headerlink" title="0.总结嗷"></a>0.总结嗷</h3><p><img src="https://pic.rmb.bdstatic.com/bjh/1bfbdfddb9ee63e5a80eb160f1f270cb.jpeg" alt="0001"></p>
+<h3 id="1-先来了解下IoC"><a href="#1-先来了解下IoC" class="headerlink" title="1.先来了解下IoC"></a>1.先来了解下IoC</h3><h4 id="1-1控制反转"><a href="#1-1控制反转" class="headerlink" title="1.1控制反转"></a>1.1控制反转</h4><ul>
+<li>依托一个类似工厂的IoC容器</li>
+<li>将对象的创建、依赖关系的管理以及生命周期交由IoC容器管理</li>
+<li>降低系统在实现上的复杂性和耦合度、易于拓展、满足开闭原则</li>
+</ul>
+<h4 id="1-2依赖注入—实现控制反转"><a href="#1-2依赖注入—实现控制反转" class="headerlink" title="1.2依赖注入—实现控制反转"></a>1.2依赖注入—实现控制反转</h4><ul>
+<li><strong>把底层类作为参数传递给上层类</strong>，实现上层对下层的“控制”</li>
+</ul>
+<p>主流的依赖注入方式：</p>
+<ol>
+<li>By 构造函数</li>
+<li>By setter方法</li>
+<li>By 接口</li>
+<li>By 注解</li>
+</ol>
+<h4 id="1-3为什么要依托IoC容器？"><a href="#1-3为什么要依托IoC容器？" class="headerlink" title="1.3为什么要依托IoC容器？"></a>1.3为什么要依托IoC容器？</h4><ul>
+<li>避免在各处使用new来创建类，并且可以做到统一维护</li>
+<li>创建实例的时候不需要知道具体的细节（通过读取配置文件，<u><em>用反射的机制来完成创建</em>？</u>）</li>
+<li><strong>反射+工厂模式</strong>的合体，满足开闭原则</li>
+</ul>
+<h4 id="1-4框架具备的最基本功能"><a href="#1-4框架具备的最基本功能" class="headerlink" title="1.4框架具备的最基本功能"></a>1.4框架具备的最基本功能</h4><ul>
+<li>解析配置：项目中采用注解</li>
+<li>定位与注册对象</li>
+<li>注入对象：在用户需要使用对象时，返回正确对象</li>
+<li>提供通用的工具类</li>
+</ul>
+<h3 id="2-IoC容器的实现"><a href="#2-IoC容器的实现" class="headerlink" title="2.IoC容器的实现"></a>2.IoC容器的实现</h3><p><strong>基本步骤：</strong></p>
+<ol>
+<li>创建注解</li>
+<li>提取标记对象</li>
+<li>实现容器（项目中采用键值对）</li>
+<li>依赖注入</li>
+</ol>
+<h4 id="2-1-创建注解"><a href="#2-1-创建注解" class="headerlink" title="2.1 创建注解"></a>2.1 创建注解</h4><table>
+<thead>
+<tr>
+<th></th>
+<th>作用</th>
+<th>作用对象</th>
+<th>生命周期</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Controller</td>
+<td>标记Controller层</td>
+<td>类(@Target(ElementType.TYPE))</td>
+<td>Runtime(因为要通过反射创建对象)</td>
+<td></td>
+</tr>
+<tr>
+<td>Service</td>
+<td>标记Service层</td>
+<td>类(@Target(ElementType.TYPE))</td>
+<td>Runtime</td>
+<td></td>
+</tr>
+<tr>
+<td>Repository</td>
+<td>用于标记Dao层中的实现类</td>
+<td>类(@Target(ElementType.TYPE))</td>
+<td>Runtime</td>
+<td></td>
+</tr>
+<tr>
+<td>Component</td>
+<td>用于标记通用的需要容器管理的组件</td>
+<td>类(@Target(ElementType.TYPE))</td>
+<td>Runtime</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="2-2-提取标记对象"><a href="#2-2-提取标记对象" class="headerlink" title="2.2 提取标记对象"></a>2.2 提取标记对象</h4><p><strong>实现思路：</strong></p>
+<ol>
+<li>指定范围，获取范围内的所有类</li>
+<li>遍历所有类，获取被注解标记的类并加载进容器中</li>
+</ol>
+<h5 id="2-2-1-获取范围内的所有类"><a href="#2-2-1-获取范围内的所有类" class="headerlink" title="2.2.1 获取范围内的所有类"></a>2.2.1 获取范围内的所有类</h5><p><strong>实现思路：</strong></p>
+<ol>
+<li>获取类的加载器 –&gt;目的：获取项目发布的实际路径</li>
+<li>通过类的加载器获取到加载的资源信息</li>
+<li>依据不同的资源类型，采用不同的方式获取资源的集合</li>
+</ol>
+<p><strong>extractPackageClass(String packageName)</strong>：通过输入的包名，返回包下所有类的集合</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取包下的类集合</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> packageName 包名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 类集合Set</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; extractPackageClass(String packageName)&#123;</span><br><span class="line">    <span class="comment">//1.获取类的加载器--&gt;目的：获取项目发布的实际路径</span></span><br><span class="line">    ClassLoader classLoader = getClassLoader();</span><br><span class="line">    <span class="comment">//2.通过类的加载器获取到加载的资源信息</span></span><br><span class="line">    <span class="comment">//getResource()方法 接受‘/’来隔开的名称，所以需要先将packageName中‘.'替换为’/‘</span></span><br><span class="line">    <span class="comment">//getResource()返回包含该类资源的url</span></span><br><span class="line">    URL url = classLoader.getResource(packageName.replace(<span class="string">"."</span>,<span class="string">"/"</span>));</span><br><span class="line">    <span class="keyword">if</span>(url==<span class="keyword">null</span>)&#123;</span><br><span class="line">        log.warn(<span class="string">"unable to get anything from package:"</span>+packageName);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//3.依据不同的资源类型，采用不同的方式获取资源的集合</span></span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">//过滤出文件类型的资源:我们需要获取的是协议为file，即本地的资源</span></span><br><span class="line">    <span class="keyword">if</span>(url.getProtocol().equalsIgnoreCase(FILE_PROTOCOL))&#123;</span><br><span class="line">        classSet = <span class="keyword">new</span> HashSet&lt;Class&lt;?&gt;&gt;();</span><br><span class="line">        <span class="comment">//首先通过获取的path路径获取路径的File对象</span></span><br><span class="line">        File packageDirectory = <span class="keyword">new</span> File(url.getPath());</span><br><span class="line">        extractClassFile(classSet,packageDirectory,packageName);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>getClassLoader()</strong>：通过获取当前线程的类加载器获取加载该类的类加载器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取ClassLoader</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ClassLoader <span class="title">getClassLoader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//当前线程的内容加载器即该类的类加载器</span></span><br><span class="line">    <span class="keyword">return</span> Thread.currentThread().getContextClassLoader();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：通过getResource（）返回的是URL数据，我们需要对返回的URL过滤，选出protocol为file类型（本地文件类型），并获取其中的Path路径信息，在提取该包路径中所有的Class类型文件</p>
+<p><img src="https://pic.rmb.bdstatic.com/bjh/c4f8f523aae6d3d793ce6e0305142094.jpeg" alt="image-20200603194722808"></p>
+<p><strong>extractClassFile(Set&lt;Class&lt;?&gt;&gt; emptyClassSet, File fileSource, String packageName)</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 递归获取目标package里面的所有class文件（包括子package里面的class文件）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> emptyClassSet 装载目标类的集合</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> fileSource 文件或者目录</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> packageName 包名</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">extractClassFile</span><span class="params">(Set&lt;Class&lt;?&gt;&gt; emptyClassSet, File fileSource, String packageName)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//终止条件：当检索的不是文件夹时</span></span><br><span class="line">    <span class="keyword">if</span>(!fileSource.isDirectory()) <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">//如果是一个文件夹，通过调用listFiles()获取这个文件夹中的所有文件或文件夹</span></span><br><span class="line">    <span class="comment">//并通过文件过滤器，留下文件夹类型，其余文件类型如果为class文件则直接加载</span></span><br><span class="line">    File[] files = fileSource.listFiles(<span class="keyword">new</span> FileFilter() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">accept</span><span class="params">(File file)</span> </span>&#123;</span><br><span class="line">            <span class="comment">//如果是文件夹类型，则通过</span></span><br><span class="line">            <span class="keyword">if</span>(file.isDirectory())&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="comment">//获取文件的绝对值路径</span></span><br><span class="line">                String absoluteFilePath = file.getAbsolutePath();</span><br><span class="line">                <span class="keyword">if</span>(absoluteFilePath.endsWith(<span class="string">".class"</span>))&#123;</span><br><span class="line">                    <span class="comment">//若是class文件，则直接加载</span></span><br><span class="line">                    addToClassSet(absoluteFilePath);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addToClassSet</span><span class="params">(String absoluteFilePath)</span> </span>&#123;</span><br><span class="line">            <span class="comment">//1.从class文件的绝对值路径里提取出包含了package的类名</span></span><br><span class="line">            <span class="comment">//比如：F:/simpleframework/simpleframwork/targt/classes/com/imooc/entity/dto/MainPage</span></span><br><span class="line">            <span class="comment">//提取为类名：com.imooc.entity.dto.MainPage</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">//首先将绝对值路径中的分割符替换为“.”</span></span><br><span class="line">            absoluteFilePath = absoluteFilePath.replace(File.separator,<span class="string">"."</span>);</span><br><span class="line">                <span class="comment">//首先截取由包名开始的字段</span></span><br><span class="line">            String className = absoluteFilePath.substring(absoluteFilePath.indexOf(packageName));</span><br><span class="line">                <span class="comment">//之后再将最后“.”结尾的文件后缀去掉</span></span><br><span class="line">            className = className.substring(<span class="number">0</span>,className.lastIndexOf(<span class="string">"."</span>));</span><br><span class="line">            <span class="comment">//2.通过反射机制获取对应的Class对象并放入classSet中</span></span><br><span class="line">            Class targetCLass = loadClass(className);</span><br><span class="line">            emptyClassSet.add(targetCLass);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">if</span>(files!=<span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">for</span>(File file:files)&#123;</span><br><span class="line">            <span class="comment">//递归调用</span></span><br><span class="line">            extractClassFile(emptyClassSet,file,packageName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>loadClass(className)</strong>：通过反射机制获取Class对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取Class对象</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> className</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; loadClass(String className)&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> Class.forName(className);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">        log.error(<span class="string">"load class error:"</span>,e);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="简单的做一个UT："><a href="#简单的做一个UT：" class="headerlink" title="简单的做一个UT："></a>简单的做一个UT：</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassUtilTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@DisplayName</span>(<span class="string">"提取目标类方法：extractPackageClass"</span>)</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">extractPackageClassTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Set&lt;Class&lt;?&gt;&gt; classSet = ClassUtil.extractPackageClass(<span class="string">"com.imooc.entity"</span>);</span><br><span class="line">        System.out.println(classSet);</span><br><span class="line">        Assertions.assertEquals(<span class="number">4</span>,classSet.size());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</div></article></div></main><footer><div class="paginator"><a class="prev" href="/spring%E6%A1%86%E6%9E%B6%E7%AF%87/%E8%87%AA%E7%A0%94springIoC02/">上一篇</a><a class="next" href="/Algorithm/Offer/Offer20/">下一篇</a></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script><div id="gitalk-container"></div><script>const gitalk = new Gitalk({
+    clientID: '2cdbd7aa1fe9fd30e3c5',     
+    clientSecret: '0d12d75f0e1788ffc85796b5a38bdddbbf40c77d',     
+    id: window.location.pathname,    
+    repo: 'blog',     
+    owner: 'zenghuqiang',     
+    admin: 'zenghuqiang',     
+})   
+gitalk.render('gitalk-container')
+</script><div class="copyright"><p>© 2020 <a href="http://www.kongkongbai.com">kongkongbai</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/achjqz/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-e/4/LvThKH1gwzXhdbY2AsjR3rm7LHWyhIG5C0jiRfn8AN2eTN5ILeztWw0H9jmN" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/github-gist.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/dockerfile.min.js"></script><script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/x86asm.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>
